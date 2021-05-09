@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MachEcs.Sandbox", "MachEcs.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MachEcs", "MachEcs\MachEcs.csproj", "{5C4DA875-235C-49C8-A4D4-F3F6E5EB002C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MachEcs.Tests", "MachEcs.Tests\MachEcs.Tests.csproj", "{C98E5F45-4D23-4B0F-8132-B9452A397BE4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,9 @@ Global
 		{5C4DA875-235C-49C8-A4D4-F3F6E5EB002C}.Debug|x64.Build.0 = Debug|x64
 		{5C4DA875-235C-49C8-A4D4-F3F6E5EB002C}.Release|x64.ActiveCfg = Release|x64
 		{5C4DA875-235C-49C8-A4D4-F3F6E5EB002C}.Release|x64.Build.0 = Release|x64
+		{C98E5F45-4D23-4B0F-8132-B9452A397BE4}.Debug|x64.ActiveCfg = Debug|x64
+		{C98E5F45-4D23-4B0F-8132-B9452A397BE4}.Debug|x64.Build.0 = Debug|x64
+		{C98E5F45-4D23-4B0F-8132-B9452A397BE4}.Release|x64.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

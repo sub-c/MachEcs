@@ -39,7 +39,7 @@ namespace MachEcs
 
         private readonly ComponentManager _componentManager;
         private readonly EntityManager _entityManager;
-        private MachEntity _singletonEntity;
+        private readonly MachEntity _singletonEntity;
         private readonly SystemManager _systemManager;
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace MachEcs
             => _entityManager.CreateEntity();
 
         /// <summary>
-        /// Destroys an entity, destroying its components.
+        /// Destroys an entity, also destroying its components.
         /// </summary>
         /// <param name="entity">The entity to destroy.</param>
         public void DestroyEntity(MachEntity entity)
@@ -133,6 +133,14 @@ namespace MachEcs
         public T GetSystem<T>()
             where T : MachSystem
             => _systemManager.GetSystem<T>();
+
+        /// <summary>
+        /// Registers the given component.
+        /// </summary>
+        /// <typeparam name="T">The type of component.</typeparam>
+        public void RegisterComponent<T>()
+            where T : IMachComponent
+            => _componentManager.RegisterComponent<T>();
 
         /// <summary>
         /// Scans an assembly and registers all classes that implement the <see cref="IMachComponent"/> interface as a component.

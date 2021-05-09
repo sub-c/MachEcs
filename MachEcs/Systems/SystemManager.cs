@@ -47,7 +47,7 @@ namespace MachEcs.Systems
         {
             foreach (var type in assembly.GetTypes())
             {
-                if (type.IsAssignableTo(typeof(MachSystem)) && !type.IsAbstract && !type.IsInterface)
+                if (typeof(MachSystem).IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface)
                 {
                     Debug.Assert(!_systems.ContainsKey(type.Name), $"System is already registered.");
                     var system = CreateSystem(type, agent);

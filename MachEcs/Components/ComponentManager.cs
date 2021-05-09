@@ -42,11 +42,21 @@ namespace MachEcs.Components
             return _componentCaches[typeName].Signature;
         }
 
+        public void RegisterComponent<T>()
+            where T : IMachComponent
+        {
+            var componentCache = new ComponentCache<T>();
+            Debug.Assert(_nextComponentBit < MachSignature.MaxSignatureBits, $"Too many components to register.");
+            componentCache.Signature.EnableBit(_nextComponentBit);
+            ++_nextComponentBit;
+            _componentCaches.Add(typeof(T).Name, componentCache);
+        }
+
         public void RegisterComponentsInAssembly(Assembly assembly)
         {
             foreach (var type in assembly.GetTypes())
             {
-                if (type.IsAssignableTo(typeof(IMachComponent)) && !type.IsAbstract && !type.IsInterface)
+                if (typeof(IMachComponent).IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface)
                 {
                     var componentCacheGenericType = typeof(ComponentCache<>).MakeGenericType(new Type[] { type });
                     var componentCacheConstructor = componentCacheGenericType.GetConstructor(Type.EmptyTypes);
