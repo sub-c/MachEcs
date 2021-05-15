@@ -5,9 +5,7 @@ using MachEcs.Entities;
 namespace MachEcs.Systems
 {
     /// <summary>
-    /// This class contains the necessary properties to facilitate a system in an entity-component-system program.
-    /// Additionally, classes that inherit from this class will be automatically registered as a system when <see cref="MachAgent"/>
-    /// registers systems via scanning an assembly.
+    /// This abstract class represents a system in the entity-component-system architecture.
     /// </summary>
     public abstract class MachSystem
     {

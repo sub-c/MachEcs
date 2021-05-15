@@ -150,7 +150,17 @@ namespace MachEcs
             => _componentManager.RegisterComponentsInAssembly(assembly);
 
         /// <summary>
+        /// Registers a new <see cref="MachSystem"/> and returns the registered instance.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="MachSystem"/> to register.</typeparam>
+        /// <returns>The registered instance of the <see cref="MachSystem"/>.</returns>
+        public MachSystem RegisterSystem<T>()
+            where T : MachSystem
+            => _systemManager.RegisterSystem<T>(this);
+
+        /// <summary>
         /// Scans an assembly and registers all classes that implement the <see cref="MachSystem"/> class as a system.
+        /// Afterwards, use <see cref="GetSystem{T}"/> to retreive a particular registered system.
         /// </summary>
         /// <param name="assembly">The assembly to scan the types of.</param>
         public void RegisterSystemsInAssembly(Assembly assembly)

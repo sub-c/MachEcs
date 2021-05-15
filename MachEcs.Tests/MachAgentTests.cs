@@ -68,6 +68,26 @@ namespace MachEcs.Tests
         }
 
         [TestMethod]
+        public void AddComponent_WhenComponentMatchesSystemSignature_AddsToSystemEntities()
+        {
+            // Arrange
+            _machAgent.RegisterComponent<TestSystemComponent>();
+            var system = _machAgent.RegisterSystem<TestSystem>();
+            var entity = _machAgent.CreateEntity();
+            var component = new TestSystemComponent { TestString = "test" };
+            var systemEntitiesBeforeCount = system.Entities.Count;
+
+            // Act
+            _machAgent.AddComponent(entity, component);
+
+            // Assert
+            Assert.AreEqual(0, systemEntitiesBeforeCount, "System contained entities before adding component.");
+            Assert.AreEqual(1, system.Entities.Count, "System did not update to contain entity with matching signature.");
+            Assert.AreEqual("test", _machAgent.GetComponent<TestSystemComponent>(entity).TestString,
+                "Component from system entity did not match the component added.");
+        }
+
+        [TestMethod]
         public void CreateEntity_WhenInvoked_ReturnsNewEntity()
         {
             // Arrange
@@ -109,7 +129,21 @@ namespace MachEcs.Tests
             }
 
             // Assert
-            ExceptionAssert.Throws<ArgumentNullException>(() => _machAgent.CreateEntity());
+            ExceptionAssert.Throws<Exception>(() => _machAgent.CreateEntity());
+        }
+
+        [TestMethod]
+        public void RegisterSystem_WhenInvoked_AbleToRetrieveSystemWithGetSystem()
+        {
+            // Arrange
+            _machAgent.RegisterComponent<TestSystemComponent>();
+            _machAgent.RegisterSystem<TestSystem>();
+
+            // Act
+            var returnedSystem = _machAgent.GetSystem<TestSystem>();
+
+            // Assert
+            Assert.IsNotNull(returnedSystem, "Could not retrieve registered system.");
         }
     }
 }
