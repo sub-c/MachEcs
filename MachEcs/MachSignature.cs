@@ -23,6 +23,20 @@
         public void RemoveSignature(MachSignature signature)
             => _bitSignature &= ~signature._bitSignature;
 
+        /// <summary>
+        /// Get a human-readable string representation of the bit-signature.
+        /// </summary>
+        /// <returns>String representation of the bit-signature.</returns>
+        public override string ToString()
+        {
+            var bitSignature = string.Empty;
+            for (int i = 0; i < sizeof(ulong); ++i)
+            {
+                bitSignature += (_bitSignature & ((ulong)1 << i)) != 0 ? "1" : "0";
+            }
+            return bitSignature;
+        }
+
         internal void DisableBit(int bitPosition)
             => _bitSignature &= ~(ulong)1 << bitPosition;
 

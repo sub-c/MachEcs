@@ -45,11 +45,6 @@ namespace MachEcs.Components
         public void RegisterComponent<T>()
             where T : IMachComponent
         {
-            //var componentCache = new ComponentCache<T>();
-            //Debug.Assert(_nextComponentBit < MachSignature.MaxSignatureBits, $"Too many components to register.");
-            //componentCache.Signature.EnableBit(_nextComponentBit);
-            //++_nextComponentBit;
-            //_componentCaches.Add(typeof(T).Name, componentCache);
             var componentCacheGenericType = typeof(ComponentCache<>).MakeGenericType(new Type[] { typeof(T) });
             var componentCacheConstructor = componentCacheGenericType.GetConstructor(Type.EmptyTypes);
             Debug.Assert(componentCacheConstructor != null, $"Could not instanciate ComponentCache<> with the found {nameof(IMachComponent)}.");
