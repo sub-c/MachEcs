@@ -11,8 +11,8 @@ Add the [Nuget package MachEcs](https://www.nuget.org/packages/MachEcs/) to your
 
 # Basic Usage
 * Register your components with either ```MachAgent.RegisterComponent<T>()``` or ```MachAgent.RegisterComponentsInAssembly()```.
+* Make sure your systems inherit ```MachAgent.Systems.MachSystem``` and they implement an array of the components they are interested working with via ```MachSystem.ComponentSignatureTypes = new Type[] { ... }```.
 * Register your systems with either ```MachAgent.RegisterSystem<T>()``` or ```MachAgent.RegisterSystemsInAssembly()```.
-* Set your system(s) signature with the component types that they are interested in entities having with ```MachSignature.Add(MachAgent.GetComponentSignature<T>())```, and then ```MachAgent.SetSystemSignature<T>()```.
 * Create entities with ```MachAgent.CreateEntity()```.
 * New-up a (previously registered) component instance.
 * Add the component to your entity with ```MachAgent.AddComponent<T>()```, or add the component to the singleton entity by not providing an entity parameter to ```AddComponent<T>()```.
