@@ -10,22 +10,25 @@ namespace MachEcs.Systems
     /// </summary>
     public abstract class MachSystem
     {
+        internal MachAgent InternalAgent { get; set; } = null;
+        internal Type[] InternalComponentSignatureTypes => ComponentSignatureTypes;
+        internal List<MachEntity> InternalEntities => Entities;
+        internal MachSignature Signature { get; } = new MachSignature();
+
         /// <summary>
         /// The <see cref="MachAgent"/> that registered this system into its entity-component-system world.
         /// </summary>
-        public MachAgent Agent { get; internal set; } = null;
+        protected MachAgent Agent => InternalAgent;
 
         /// <summary>
         /// The entities whos signature match (at a minimum) the components in the <see cref="ComponentSignatureTypes"/> array.
         /// </summary>
-        public List<MachEntity> Entities { get; } = new List<MachEntity>();
+        protected List<MachEntity> Entities { get; } = new List<MachEntity>();
 
         /// <summary>
         /// The component types which this system is interested in working with; entities with components that match (at a minimum)
-        /// the components in this array will be populated into <see cref="Entities"/> automatically.
+        /// the component(s) in this array will be populated into <see cref="Entities"/> automatically.
         /// </summary>
-        public abstract Type[] ComponentSignatureTypes { get; }
-
-        internal MachSignature Signature { get; } = new MachSignature();
+        protected abstract Type[] ComponentSignatureTypes { get; }
     }
 }

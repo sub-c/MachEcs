@@ -75,14 +75,14 @@ namespace MachEcs.Tests
             var system = _machAgent.RegisterSystem<TestSystem>();
             var entity = _machAgent.CreateEntity();
             var component = new TestSystemComponent { TestString = "test" };
-            var systemEntitiesBeforeCount = system.Entities.Count;
+            var systemEntitiesBeforeCount = system.InternalEntities.Count;
 
             // Act
             _machAgent.AddComponent(entity, component);
 
             // Assert
             Assert.AreEqual(0, systemEntitiesBeforeCount, "System contained entities before adding component.");
-            Assert.AreEqual(1, system.Entities.Count, "System did not update to contain entity with matching signature.");
+            Assert.AreEqual(1, system.InternalEntities.Count, "System did not update to contain entity with matching signature.");
             Assert.AreEqual("test", _machAgent.GetComponent<TestSystemComponent>(entity).TestString,
                 "Component from system entity did not match the component added.");
         }

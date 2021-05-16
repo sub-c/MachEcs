@@ -16,7 +16,7 @@ namespace MachEcs.Systems
         {
             foreach (var systemPair in _systems)
             {
-                systemPair.Value.Entities.Remove(entity);
+                systemPair.Value.InternalEntities.Remove(entity);
             }
         }
 
@@ -26,11 +26,11 @@ namespace MachEcs.Systems
             {
                 if (entity.Signature.MatchesSignature(systemPair.Value.Signature))
                 {
-                    systemPair.Value.Entities.Add(entity);
+                    systemPair.Value.InternalEntities.Add(entity);
                 }
                 else
                 {
-                    systemPair.Value.Entities.Remove(entity);
+                    systemPair.Value.InternalEntities.Remove(entity);
                 }
             }
         }
@@ -84,14 +84,14 @@ namespace MachEcs.Systems
             var systemConstructor = systemType.GetConstructor(Type.EmptyTypes);
             Debug.Assert(systemConstructor != null, "System does not have a parameter-less constructor.");
             var system = systemConstructor.Invoke(Type.EmptyTypes) as MachSystem;
-            system.Agent = agent;
+            system.InternalAgent = agent;
             return system;
         }
 
         private MachSignature CreateSystemSignature(MachSystem system, Type systemType, MachAgent agent)
         {
             MachSignature systemSignature = new MachSignature();
-            foreach (var componentSignatureType in system.ComponentSignatureTypes)
+            foreach (var componentSignatureType in system.InternalComponentSignatureTypes)
             {
                 var methodInfo = typeof(MachAgent).GetMethod(nameof(MachAgent.GetComponentSignature));
                 var genericMethod = methodInfo.MakeGenericMethod(componentSignatureType);

@@ -5,7 +5,7 @@ namespace MachEcs.Tests.TestClasses
 {
     public sealed class TestSystem : MachSystem
     {
-        public override Type[] ComponentSignatureTypes => new Type[]
+        protected override Type[] ComponentSignatureTypes => new Type[]
         {
             typeof(TestSystemComponent)
         };

@@ -6,7 +6,7 @@ namespace MachEcs.Sandbox
 {
     internal sealed class TestMachSystem : MachSystem
     {
-        public override Type[] ComponentSignatureTypes => new Type[]
+        protected override Type[] ComponentSignatureTypes => new Type[]
         {
             typeof(TestMachComponent),
             typeof(DuckComponent)
