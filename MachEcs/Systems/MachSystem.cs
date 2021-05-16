@@ -5,7 +5,8 @@ using MachEcs.Entities;
 namespace MachEcs.Systems
 {
     /// <summary>
-    /// This abstract class represents a system in the entity-component-system architecture.
+    /// This abstract class represents a system in the entity-component-system architecture; system classes should
+    /// inherit from this abstract class.
     /// </summary>
     public abstract class MachSystem
     {

@@ -1,8 +1,8 @@
 ﻿namespace MachEcs.Components
 {
     /// <summary>
-    /// Classes that implement this interface will be automatically registered as a component when <see cref="MachAgent"/>
-    /// registers components via an assembly.
+    /// This interface represents a component to be attached to entities; component classes should inherit
+    /// from this interface.
     /// </summary>
     public interface IMachComponent
     {

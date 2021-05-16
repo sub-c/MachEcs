@@ -7,7 +7,7 @@ using MachEcs.Systems;
 namespace MachEcs
 {
     /// <summary>
-    /// Holds and gives access to an entity-component-system world.
+    /// This class is a domain-facade into an entity-component-system world.
     /// </summary>
     public sealed class MachAgent
     {
@@ -87,7 +87,7 @@ namespace MachEcs
             => _entityManager.CreateEntity();
 
         /// <summary>
-        /// Destroys an entity, also destroying its components.
+        /// Destroys an entity. Any components attached to the entity are also destroyed.
         /// </summary>
         /// <param name="entity">The entity to destroy.</param>
         public void DestroyEntity(MachEntity entity)
