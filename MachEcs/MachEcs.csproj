@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>x64</Platforms>
     <Authors>Sub-C</Authors>
     <Description>An entity-component-system (ECS) library for C#.</Description>
@@ -9,7 +9,7 @@
     <PackageProjectUrl>https://github.com/sub-c/MachEcs</PackageProjectUrl>
     <RepositoryUrl>https://github.com/sub-c/MachEcs</RepositoryUrl>
     <PackageTags>ecs</PackageTags>
-    <Version>1.2.0</Version>
+    <Version>1.2.1</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MachEcs.Tests.TestClasses;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SubC.MachEcs;
 using SubC.MachEcs.Components;
 using SubC.MachEcs.Entities;
 using SubC.MachEcs.Systems;
-using MachEcs.Tests.TestClasses;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MachEcs.Tests
 {
