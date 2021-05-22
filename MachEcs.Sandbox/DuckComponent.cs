@@ -1,4 +1,4 @@
-﻿using MachEcs.Components;
+﻿using SubC.MachEcs.Components;
 
 namespace MachEcs.Sandbox
 {

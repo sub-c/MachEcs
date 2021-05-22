@@ -1,4 +1,4 @@
-﻿namespace MachEcs.Entities
+﻿namespace SubC.MachEcs.Entities
 {
     /// <summary>
     /// An entity that can have components attached to, and be populated into systems in an entity-component-system program.

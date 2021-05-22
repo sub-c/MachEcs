@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MachEcs.Components;
-using MachEcs.Entities;
-using MachEcs.Systems;
+using SubC.MachEcs.Components;
+using SubC.MachEcs.Entities;
+using SubC.MachEcs.Systems;
 using MachEcs.Tests.TestClasses;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

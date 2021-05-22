@@ -1,6 +1,6 @@
-﻿using MachEcs.Entities;
+﻿using SubC.MachEcs.Entities;
 
-namespace MachEcs.Components
+namespace SubC.MachEcs.Components
 {
     internal interface IComponentCache
     {

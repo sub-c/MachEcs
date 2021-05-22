@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
-using MachEcs.Entities;
+using SubC.MachEcs.Entities;
 
-namespace MachEcs.Systems
+namespace SubC.MachEcs.Systems
 {
     internal sealed class SystemManager
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using MachEcs.Systems;
+using SubC.MachEcs.Systems;
 
 namespace MachEcs.Sandbox
 {

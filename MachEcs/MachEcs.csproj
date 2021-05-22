@@ -9,7 +9,18 @@
     <PackageProjectUrl>https://github.com/sub-c/MachEcs</PackageProjectUrl>
     <RepositoryUrl>https://github.com/sub-c/MachEcs</RepositoryUrl>
     <PackageTags>ecs</PackageTags>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <DocumentationFile></DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <RootNamespace>SubC.MachEcs</RootNamespace>
+    <AssemblyName>MachEcs</AssemblyName>
   </PropertyGroup>
 
 </Project>

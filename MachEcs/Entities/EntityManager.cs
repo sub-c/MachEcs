@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace MachEcs.Entities
+namespace SubC.MachEcs.Entities
 {
     internal sealed class EntityManager
     {

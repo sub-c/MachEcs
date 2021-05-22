@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using MachEcs.Entities;
+using SubC.MachEcs.Entities;
 
-namespace MachEcs.Systems
+namespace SubC.MachEcs.Systems
 {
     /// <summary>
     /// This abstract class represents a system in the entity-component-system architecture; system classes should

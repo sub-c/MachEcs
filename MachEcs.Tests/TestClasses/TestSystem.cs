@@ -1,5 +1,5 @@
 ﻿using System;
-using MachEcs.Systems;
+using SubC.MachEcs.Systems;
 
 namespace MachEcs.Tests.TestClasses
 {

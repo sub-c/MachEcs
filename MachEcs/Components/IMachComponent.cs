@@ -1,4 +1,4 @@
-﻿namespace MachEcs.Components
+﻿namespace SubC.MachEcs.Components
 {
     /// <summary>
     /// This interface represents a component to be attached to entities; component classes should inherit

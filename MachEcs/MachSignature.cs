@@ -1,4 +1,4 @@
-﻿namespace MachEcs
+﻿namespace SubC.MachEcs
 {
     /// <summary>
     /// This class holds the signature bits that represent components in the entity-component-system world.

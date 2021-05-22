@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using MachEcs.Entities;
+using SubC.MachEcs.Entities;
 
-namespace MachEcs.Components
+namespace SubC.MachEcs.Components
 {
     internal sealed class ComponentCache<T> : IComponentCache
         where T : IMachComponent

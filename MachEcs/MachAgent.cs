@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
-using MachEcs.Components;
-using MachEcs.Entities;
-using MachEcs.Systems;
+using SubC.MachEcs.Components;
+using SubC.MachEcs.Entities;
+using SubC.MachEcs.Systems;
 
-namespace MachEcs
+namespace SubC.MachEcs
 {
     /// <summary>
     /// This class is a domain-facade into an entity-component-system world.
