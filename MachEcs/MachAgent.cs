@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 using SubC.MachEcs.Components;
 using SubC.MachEcs.Entities;
@@ -196,5 +197,15 @@ namespace SubC.MachEcs
         public void SetSystemSignature<T>(MachSignature signature)
             where T : MachSystem
             => _systemManager.SetSystemSignature<T>(signature);
+
+        /// <summary>
+        /// Gets a summary of active and free entities, componenets, and systems.
+        /// </summary>
+        /// <returns>Summary of active and free entities, components, and systems.</returns>
+        public override string ToString()
+            => $"{nameof(MachAgent)} Status:{Environment.NewLine}" +
+            $"Entities Active/Free: {EntitiesActive}/{EntitiesFree}{Environment.NewLine}" +
+            $"Componenets Active/Free: {ComponentsActive}/{ComponentsFree}{Environment.NewLine}" +
+            $"Systems Active: {SystemsActive}";
     }
 }

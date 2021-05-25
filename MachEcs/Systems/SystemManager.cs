@@ -46,7 +46,7 @@ namespace SubC.MachEcs.Systems
         public MachSystem RegisterSystem<T>(MachAgent agent)
             where T : MachSystem
         {
-            Debug.Assert(!_systems.ContainsKey(typeof(T).Name), $"System is already registered.");
+            Debug.Assert(!_systems.ContainsKey(typeof(T).Name), "System is already registered.");
             var system = CreateSystem(typeof(T), agent);
             _systems.Add(typeof(T).Name, system);
             var systemSignature = CreateSystemSignature(system, typeof(T), agent);
@@ -60,12 +60,14 @@ namespace SubC.MachEcs.Systems
             {
                 if (typeof(MachSystem).IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface)
                 {
-                    Debug.Assert(!_systems.ContainsKey(type.Name), $"System is already registered.");
+                    Debug.Assert(!_systems.ContainsKey(type.Name), "System is already registered.");
                     var system = CreateSystem(type, agent);
                     _systems.Add(type.Name, system);
                     var systemSignature = CreateSystemSignature(system, type, agent);
-                    var setSignatureMethodInfo = typeof(MachAgent).GetMethod(nameof(MachAgent.SetSystemSignature));
+                    var setSignatureMethodInfo = typeof(SystemManager).GetMethod(nameof(SetSystemSignature));
+                    Debug.Assert(setSignatureMethodInfo != null, $"Could not get the {nameof(SetSystemSignature)} method info.");
                     var setSignatureMethod = setSignatureMethodInfo.MakeGenericMethod(type);
+                    Debug.Assert(setSignatureMethod != null, $"Could not create the {nameof(SetSystemSignature)} generic method with type {type.Name}.");
                     setSignatureMethod.Invoke(agent, new object[] { systemSignature });
                 }
             }
@@ -93,9 +95,12 @@ namespace SubC.MachEcs.Systems
             MachSignature systemSignature = new MachSignature();
             foreach (var componentSignatureType in system.InternalComponentSignatureTypes)
             {
-                var methodInfo = typeof(MachAgent).GetMethod(nameof(MachAgent.GetComponentSignature));
+                var methodInfo = agent.GetType().GetMethod(nameof(MachAgent.GetComponentSignature));
+                Debug.Assert(methodInfo != null, $"Could not get the {nameof(MachAgent.GetComponentSignature)} method info when creating system signature.");
                 var genericMethod = methodInfo.MakeGenericMethod(componentSignatureType);
+                Debug.Assert(genericMethod != null, $"Could not create the generic method {nameof(MachAgent.GetComponentSignature)} with the type {componentSignatureType.Name}.");
                 var componentSignature = genericMethod.Invoke(agent, null) as MachSignature;
+                Debug.Assert(componentSignature != null, $"Null component signature when attempting to get the populate the system signature with the component type {componentSignatureType.Name}.");
                 systemSignature.AddSignature(componentSignature);
             }
             return systemSignature;

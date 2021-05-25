@@ -1,7 +1,8 @@
 ﻿namespace SubC.MachEcs.Entities
 {
     /// <summary>
-    /// An entity that can have components attached to, and be populated into systems in an entity-component-system program.
+    /// An entity that can be associated with components, and then be populated into systems that match (at a
+    /// minimum) those components.
     /// </summary>
     public sealed class MachEntity
     {

@@ -1,7 +1,7 @@
 ﻿namespace SubC.MachEcs.Components
 {
     /// <summary>
-    /// This interface represents a component to be attached to entities; component classes should inherit
+    /// This interface represents a component in the entity-component-system world; component classes should inherit
     /// from this interface.
     /// </summary>
     public interface IMachComponent
