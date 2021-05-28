@@ -11,7 +11,7 @@ using SubC.MachEcs.Systems;
 namespace MachEcs.Tests
 {
     [TestClass]
-    public sealed class MachAgentTests
+    public sealed class MachAgentTestsEcs
     {
         private const int MaximumAvailableEntities = MaximumTotalEntities - 1;
         private const int MaximumTotalEntities = 5000;
