@@ -2,7 +2,7 @@
 {
     internal sealed class MachEventSubscribers<T> : IMachEventSubscribers
     {
-        public MachEventTopic.MachEventHandler<T> Subscribers;
+        public MachEventTopic<T>.MachEventHandler Subscribers;
 
         public void RemoveAllSubscribers()
             => Subscribers = null;

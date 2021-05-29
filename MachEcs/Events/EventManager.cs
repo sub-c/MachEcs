@@ -5,49 +5,49 @@ namespace SubC.MachEcs.Events
 {
     internal sealed class EventManager
     {
-        private readonly IDictionary<MachEventTopic, IMachEventSubscribers> _eventTopicSubscriptions = new Dictionary<MachEventTopic, IMachEventSubscribers>();
+        private readonly IDictionary<IMachEventTopic, IMachEventSubscribers> _topicSubscriptions = new Dictionary<IMachEventTopic, IMachEventSubscribers>();
 
-        public void RegisterEventTopic<T>(MachEventTopic eventTopic)
+        public void RegisterEventTopic<T>(MachEventTopic<T> eventTopic)
         {
-            Debug.Assert(!_eventTopicSubscriptions.ContainsKey(eventTopic), "Event ID cannot be registered twice.");
-            _eventTopicSubscriptions.Add(eventTopic, new MachEventSubscribers<T>());
+            Debug.Assert(!_topicSubscriptions.ContainsKey(eventTopic), "Event ID cannot be registered twice.");
+            _topicSubscriptions.Add(eventTopic, new MachEventSubscribers<T>());
         }
 
-        public void RemoveAllSubscribersFromEvent(MachEventTopic eventID)
+        public void RemoveAllSubscribersFromEvent<T>(MachEventTopic<T> eventID)
         {
-            Debug.Assert(_eventTopicSubscriptions.ContainsKey(eventID), "Event ID not registered before use.");
-            _eventTopicSubscriptions[eventID].RemoveAllSubscribers();
+            Debug.Assert(_topicSubscriptions.ContainsKey(eventID), "Event ID not registered before use.");
+            _topicSubscriptions[eventID].RemoveAllSubscribers();
         }
 
-        public void SendEvent<T>(MachEventTopic eventTopic, MachEventArgs<T> eventArgs)
+        public void SendEvent<T>(MachEventTopic<T> eventTopic, MachEventArgs<T> eventArgs)
         {
             var subscribers = GetEventSubscribers<T>(eventTopic);
             subscribers.Subscribers?.Invoke(eventArgs);
         }
 
-        public void SubscribeToEventTopic<T>(MachEventTopic eventTopic, MachEventTopic.MachEventHandler<T> eventHandler)
+        public void SubscribeToEventTopic<T>(MachEventTopic<T> eventTopic, MachEventTopic<T>.MachEventHandler eventHandler)
         {
             var subscribers = GetEventSubscribers<T>(eventTopic);
             subscribers.Subscribers += eventHandler;
         }
 
-        public void UnregisterEventTopic(MachEventTopic eventTopic)
+        public void UnregisterEventTopic<T>(MachEventTopic<T> eventTopic)
         {
-            Debug.Assert(_eventTopicSubscriptions.ContainsKey(eventTopic), "Event ID was not registered before use.");
-            _eventTopicSubscriptions[eventTopic].RemoveAllSubscribers();
-            _eventTopicSubscriptions.Remove(eventTopic);
+            Debug.Assert(_topicSubscriptions.ContainsKey(eventTopic), "Event ID was not registered before use.");
+            _topicSubscriptions[eventTopic].RemoveAllSubscribers();
+            _topicSubscriptions.Remove(eventTopic);
         }
 
-        public void UnsubscribeFromEventTopic<T>(MachEventTopic eventTopic, MachEventTopic.MachEventHandler<T> eventHandler)
+        public void UnsubscribeFromEventTopic<T>(MachEventTopic<T> eventTopic, MachEventTopic<T>.MachEventHandler eventHandler)
         {
             var subscribers = GetEventSubscribers<T>(eventTopic);
             subscribers.Subscribers -= eventHandler;
         }
 
-        private MachEventSubscribers<T> GetEventSubscribers<T>(MachEventTopic eventTopic)
+        private MachEventSubscribers<T> GetEventSubscribers<T>(MachEventTopic<T> eventTopic)
         {
-            Debug.Assert(_eventTopicSubscriptions.ContainsKey(eventTopic), "Event ID was not registered before use.");
-            return _eventTopicSubscriptions[eventTopic] as MachEventSubscribers<T>;
+            Debug.Assert(_topicSubscriptions.ContainsKey(eventTopic), "Event ID was not registered before use.");
+            return _topicSubscriptions[eventTopic] as MachEventSubscribers<T>;
         }
     }
 }

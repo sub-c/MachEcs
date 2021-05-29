@@ -154,11 +154,11 @@ namespace SubC.MachEcs
             => _componentManager.RegisterComponentsInAssembly(assembly);
 
         /// <summary>
-        /// Registers a <see cref="MachEventTopic"/> as an event topic.
+        /// Registers a <see cref="MachEventTopic{T}"/> as an event topic.
         /// </summary>
         /// <typeparam name="T">The data type included with the event arguments.</typeparam>
         /// <param name="eventTopic">The unique class-reference of the event topic.</param>
-        public void RegisterEventTopic<T>(MachEventTopic eventTopic)
+        public void RegisterEventTopic<T>(MachEventTopic<T> eventTopic)
             => _eventManager.RegisterEventTopic<T>(eventTopic);
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace SubC.MachEcs
         /// Removes all subscribers from an event topic.
         /// </summary>
         /// <param name="eventTopic">The event topic to remove all subscribers from.</param>
-        public void RemoveAllSubscribersFromEvent(MachEventTopic eventTopic)
+        public void RemoveAllSubscribersFromEvent<T>(MachEventTopic<T> eventTopic)
             => _eventManager.RemoveAllSubscribersFromEvent(eventTopic);
 
         /// <summary>
@@ -208,12 +208,12 @@ namespace SubC.MachEcs
         }
 
         /// <summary>
-        /// Invoke all subscribers to a <see cref="MachEventTopic"/>, passing the <see cref="MachEventArgs{T}"/>.
+        /// Invoke all subscribers to a <see cref="MachEventTopic{T}"/>, passing the <see cref="MachEventArgs{T}"/>.
         /// </summary>
         /// <typeparam name="T">The data type included in the event argument.</typeparam>
         /// <param name="eventTopic">The event topic to invoke subscribers of.</param>
         /// <param name="eventArgs">The event arguments to pass to each subscriber.</param>
-        public void SendEvent<T>(MachEventTopic eventTopic, MachEventArgs<T> eventArgs)
+        public void SendEvent<T>(MachEventTopic<T> eventTopic, MachEventArgs<T> eventArgs)
             => _eventManager.SendEvent(eventTopic, eventArgs);
 
         /// <summary>
@@ -226,12 +226,12 @@ namespace SubC.MachEcs
             => _systemManager.SetSystemSignature<T>(signature);
 
         /// <summary>
-        /// Subscribes an event handler for a given <see cref="MachEventTopic"/>.
+        /// Subscribes an event handler for a given <see cref="MachEventTopic{T}"/>.
         /// </summary>
         /// <typeparam name="T">The data type included in the event argument.</typeparam>
         /// <param name="eventTopic">The event topic to subscribe to.</param>
-        /// <param name="eventHandler">The method to handle events of the <see cref="MachEventTopic"/>.</param>
-        public void SubscribeToEventTopic<T>(MachEventTopic eventTopic, MachEventTopic.MachEventHandler<T> eventHandler)
+        /// <param name="eventHandler">The method to handle events of the <see cref="MachEventTopic{T}"/>.</param>
+        public void SubscribeToEventTopic<T>(MachEventTopic<T> eventTopic, MachEventTopic<T>.MachEventHandler eventHandler)
             => _eventManager.SubscribeToEventTopic(eventTopic, eventHandler);
 
         /// <summary>
@@ -245,19 +245,19 @@ namespace SubC.MachEcs
             $"Systems Active: {SystemsActive}";
 
         /// <summary>
-        /// Unregister a <see cref="MachEventTopic"/> as a topic, and removes all subscribers.
+        /// Unregister a <see cref="MachEventTopic{T}"/> as a topic, and removes all subscribers.
         /// </summary>
         /// <param name="eventTopic">The event topic to unregister.</param>
-        public void UnregisterEventTopic(MachEventTopic eventTopic)
+        public void UnregisterEventTopic<T>(MachEventTopic<T> eventTopic)
             => _eventManager.UnregisterEventTopic(eventTopic);
 
         /// <summary>
-        /// Unsubscribes an event handler for a given <see cref="MachEventTopic"/>.
+        /// Unsubscribes an event handler for a given <see cref="MachEventTopic{T}"/>.
         /// </summary>
         /// <typeparam name="T">The data type included in the event argument.</typeparam>
         /// <param name="eventTopic">The event topic to unsubscribe from.</param>
-        /// <param name="eventHandler">The method to remove as a handler of the <see cref="MachEventTopic"/>.</param>
-        public void UnsubscribeFromEventTopic<T>(MachEventTopic eventTopic, MachEventTopic.MachEventHandler<T> eventHandler)
+        /// <param name="eventHandler">The method to remove as a handler of the <see cref="MachEventTopic{T}"/>.</param>
+        public void UnsubscribeFromEventTopic<T>(MachEventTopic<T> eventTopic, MachEventTopic<T>.MachEventHandler eventHandler)
             => _eventManager.UnsubscribeFromEventTopic(eventTopic, eventHandler);
     }
 }
