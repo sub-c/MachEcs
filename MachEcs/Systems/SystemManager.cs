@@ -64,7 +64,7 @@ namespace SubC.MachEcs.Systems
                     var system = CreateSystem(type, agent);
                     _systems.Add(type.Name, system);
                     var systemSignature = CreateSystemSignature(system, type, agent);
-                    var setSignatureMethodInfo = typeof(SystemManager).GetMethod(nameof(SetSystemSignature));
+                    var setSignatureMethodInfo = typeof(MachAgent).GetMethod(nameof(SetSystemSignature));
                     Debug.Assert(setSignatureMethodInfo != null, $"Could not get the {nameof(SetSystemSignature)} method info.");
                     var setSignatureMethod = setSignatureMethodInfo.MakeGenericMethod(type);
                     Debug.Assert(setSignatureMethod != null, $"Could not create the {nameof(SetSystemSignature)} generic method with type {type.Name}.");

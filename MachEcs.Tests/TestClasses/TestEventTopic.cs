@@ -2,7 +2,7 @@
 
 namespace MachEcs.Tests.TestClasses
 {
-    public sealed class TestEventTopic : MachEventTopic<TestEventArgs>
+    public sealed class TestEventTopic : MachEventTopic<TestEventArgData>
     {
     }
 }

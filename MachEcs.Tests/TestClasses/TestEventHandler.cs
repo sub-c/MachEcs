@@ -4,7 +4,7 @@ namespace MachEcs.Tests.TestClasses
 {
     public sealed class TestEventHandler
     {
-        public void TestHandler(MachEventArgs<TestEventArgs> eventArgs)
+        public void TestHandler(MachEventArgs<TestEventArgData> eventArgs)
         {
         }
     }

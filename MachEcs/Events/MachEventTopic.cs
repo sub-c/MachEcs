@@ -4,8 +4,9 @@
     /// This abstract class represents an event identifier/topic. The class reference is used, so no unique data is
     /// needed in the class itself.
     /// </summary>
-    /// <typeparam name="T">The data type included with event arguments for this topic.</typeparam>
+    /// <typeparam name="T">The event argument type.</typeparam>
     public abstract class MachEventTopic<T> : IMachEventTopic
+        where T : IMachEventArgData
     {
         /// <summary>
         /// The delegate for an event handler.

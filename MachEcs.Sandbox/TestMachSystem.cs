@@ -8,7 +8,6 @@ namespace MachEcs.Sandbox
     {
         protected override Type[] ComponentSignatureTypes => new Type[]
         {
-            typeof(TestMachComponent),
             typeof(DuckComponent)
         };
 
