@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Reflection;
 using SubC.MachEcs.Components;
 using SubC.MachEcs.Entities;
+using SubC.MachEcs.Events;
 using SubC.MachEcs.Systems;
 
 namespace SubC.MachEcs
@@ -40,6 +41,7 @@ namespace SubC.MachEcs
 
         private readonly ComponentManager _componentManager;
         private readonly EntityManager _entityManager;
+        private readonly EventManager _eventManager;
         private readonly MachEntity _singletonEntity;
         private readonly SystemManager _systemManager;
 
@@ -52,6 +54,7 @@ namespace SubC.MachEcs
             Debug.Assert(maximumEntities > 0, $"Maximum entities must be a positive number.");
             _componentManager = new ComponentManager();
             _entityManager = new EntityManager(maximumEntities);
+            _eventManager = new EventManager();
             _singletonEntity = _entityManager.CreateEntity();
             _systemManager = new SystemManager();
         }
@@ -151,6 +154,15 @@ namespace SubC.MachEcs
             => _componentManager.RegisterComponentsInAssembly(assembly);
 
         /// <summary>
+        /// Registers a <see cref="MachEventTopic{T}"/> as an event topic.
+        /// </summary>
+        /// <typeparam name="T">The data type included with the event arguments.</typeparam>
+        /// <param name="eventTopic">The unique class-reference of the event topic.</param>
+        public void RegisterEventTopic<T>(MachEventTopic<T> eventTopic)
+            where T : IMachEventArgData
+            => _eventManager.RegisterEventTopic<T>(eventTopic);
+
+        /// <summary>
         /// Registers a new <see cref="MachSystem"/> and returns the registered instance.
         /// </summary>
         /// <typeparam name="T">The <see cref="MachSystem"/> to register.</typeparam>
@@ -166,7 +178,15 @@ namespace SubC.MachEcs
         /// <param name="assembly">The assembly to scan the types of.</param>
         public void RegisterSystemsInAssembly(Assembly assembly)
             => _systemManager.RegisterSystemsInAssembly(assembly, this);
-        
+
+        /// <summary>
+        /// Removes all subscribers from an event topic.
+        /// </summary>
+        /// <param name="eventTopic">The event topic to remove all subscribers from.</param>
+        public void RemoveAllSubscribersFromEvent<T>(MachEventTopic<T> eventTopic)
+            where T : IMachEventArgData
+            => _eventManager.RemoveAllSubscribersFromEvent(eventTopic);
+
         /// <summary>
         /// Removes a component from the singleton entity.
         /// </summary>
@@ -190,6 +210,16 @@ namespace SubC.MachEcs
         }
 
         /// <summary>
+        /// Invoke all subscribers to a <see cref="MachEventTopic{T}"/>, passing the <see cref="MachEventArgs{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The data type included in the event argument.</typeparam>
+        /// <param name="eventTopic">The event topic to invoke subscribers of.</param>
+        /// <param name="eventArgs">The event arguments to pass to each subscriber.</param>
+        public void SendEvent<T>(MachEventTopic<T> eventTopic, MachEventArgs<T> eventArgs)
+            where T : IMachEventArgData
+            => _eventManager.SendEvent(eventTopic, eventArgs);
+
+        /// <summary>
         /// Sets the signature of a given system.
         /// </summary>
         /// <typeparam name="T">The system to set the signature of.</typeparam>
@@ -197,6 +227,16 @@ namespace SubC.MachEcs
         public void SetSystemSignature<T>(MachSignature signature)
             where T : MachSystem
             => _systemManager.SetSystemSignature<T>(signature);
+
+        /// <summary>
+        /// Subscribes an event handler for a given <see cref="MachEventTopic{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The data type included in the event argument.</typeparam>
+        /// <param name="eventTopic">The event topic to subscribe to.</param>
+        /// <param name="eventHandler">The method to handle events of the <see cref="MachEventTopic{T}"/>.</param>
+        public void SubscribeToEventTopic<T>(MachEventTopic<T> eventTopic, MachEventTopic<T>.MachEventHandler eventHandler)
+            where T : IMachEventArgData
+            => _eventManager.SubscribeToEventTopic(eventTopic, eventHandler);
 
         /// <summary>
         /// Gets a summary of active and free entities, componenets, and systems.
@@ -207,5 +247,23 @@ namespace SubC.MachEcs
             $"Entities Active/Free: {EntitiesActive}/{EntitiesFree}{Environment.NewLine}" +
             $"Componenets Active/Free: {ComponentsActive}/{ComponentsFree}{Environment.NewLine}" +
             $"Systems Active: {SystemsActive}";
+
+        /// <summary>
+        /// Unregister a <see cref="MachEventTopic{T}"/> as a topic, and removes all subscribers.
+        /// </summary>
+        /// <param name="eventTopic">The event topic to unregister.</param>
+        public void UnregisterEventTopic<T>(MachEventTopic<T> eventTopic)
+            where T : IMachEventArgData
+            => _eventManager.UnregisterEventTopic(eventTopic);
+
+        /// <summary>
+        /// Unsubscribes an event handler for a given <see cref="MachEventTopic{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The data type included in the event argument.</typeparam>
+        /// <param name="eventTopic">The event topic to unsubscribe from.</param>
+        /// <param name="eventHandler">The method to remove as a handler of the <see cref="MachEventTopic{T}"/>.</param>
+        public void UnsubscribeFromEventTopic<T>(MachEventTopic<T> eventTopic, MachEventTopic<T>.MachEventHandler eventHandler)
+            where T : IMachEventArgData
+            => _eventManager.UnsubscribeFromEventTopic(eventTopic, eventHandler);
     }
 }
