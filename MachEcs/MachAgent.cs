@@ -167,7 +167,7 @@ namespace SubC.MachEcs
         /// </summary>
         /// <typeparam name="T">The <see cref="MachSystem"/> to register.</typeparam>
         /// <returns>The registered instance of the <see cref="MachSystem"/>.</returns>
-        public MachSystem RegisterSystem<T>()
+        public T RegisterSystem<T>()
             where T : MachSystem
             => _systemManager.RegisterSystem<T>(this);
 
