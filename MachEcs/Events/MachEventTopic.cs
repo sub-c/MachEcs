@@ -6,7 +6,6 @@
     /// </summary>
     /// <typeparam name="T">The event argument data type.</typeparam>
     public abstract class MachEventTopic<T> : IMachEventTopic
-        where T : IMachEventArgData
     {
         /// <summary>
         /// The delegate for an event handler.
