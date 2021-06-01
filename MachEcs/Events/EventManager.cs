@@ -21,7 +21,7 @@ namespace SubC.MachEcs.Events
             _topicSubscriptions[eventTopic].RemoveAllSubscribers();
         }
 
-        public void SendEvent<T>(MachEventTopic<T> eventTopic, MachEventArgs<T> eventArgs)
+        public void SendEvent<T>(MachEventTopic<T> eventTopic, T eventArgs)
             where T : IMachEventArgData
         {
             Debug.Assert(_topicSubscriptions.ContainsKey(eventTopic), "Event topic was not registered before use.");

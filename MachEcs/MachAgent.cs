@@ -167,7 +167,7 @@ namespace SubC.MachEcs
         /// </summary>
         /// <typeparam name="T">The <see cref="MachSystem"/> to register.</typeparam>
         /// <returns>The registered instance of the <see cref="MachSystem"/>.</returns>
-        public T RegisterSystem<T>()
+        public MachSystem RegisterSystem<T>()
             where T : MachSystem
             => _systemManager.RegisterSystem<T>(this);
 
@@ -210,12 +210,12 @@ namespace SubC.MachEcs
         }
 
         /// <summary>
-        /// Invoke all subscribers to a <see cref="MachEventTopic{T}"/>, passing the <see cref="MachEventArgs{T}"/>.
+        /// Invoke all subscribers to a <see cref="MachEventTopic{T}"/>, passing the event argument data.
         /// </summary>
         /// <typeparam name="T">The data type included in the event argument.</typeparam>
         /// <param name="eventTopic">The event topic to invoke subscribers of.</param>
-        /// <param name="eventArgs">The event arguments to pass to each subscriber.</param>
-        public void SendEvent<T>(MachEventTopic<T> eventTopic, MachEventArgs<T> eventArgs)
+        /// <param name="eventArgs">The event argument data to pass to each subscriber.</param>
+        public void SendEvent<T>(MachEventTopic<T> eventTopic, T eventArgs)
             where T : IMachEventArgData
             => _eventManager.SendEvent(eventTopic, eventArgs);
 
