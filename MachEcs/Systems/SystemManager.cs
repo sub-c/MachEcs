@@ -43,7 +43,7 @@ namespace SubC.MachEcs.Systems
             return _systems[systemName] as T;
         }
 
-        public MachSystem RegisterSystem<T>(MachAgent agent)
+        public T RegisterSystem<T>(MachAgent agent)
             where T : MachSystem
         {
             Debug.Assert(!_systems.ContainsKey(typeof(T).Name), "System is already registered.");
@@ -51,7 +51,7 @@ namespace SubC.MachEcs.Systems
             _systems.Add(typeof(T).Name, system);
             var systemSignature = CreateSystemSignature(system, typeof(T), agent);
             SetSystemSignature<T>(systemSignature);
-            return system;
+            return system as T;
         }
 
         public void RegisterSystemsInAssembly(Assembly assembly, MachAgent agent)
