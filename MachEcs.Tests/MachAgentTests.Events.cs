@@ -72,15 +72,15 @@ namespace MachEcs.Tests
                 ExpectedEventTopic,
                 (eventArgs) =>
                 {
-                    actualEventString = eventArgs.EventData.TestString;
+                    actualEventString = eventArgs.TestString;
                 });
-            var eventArgs = new MachEventArgs<TestEventArgData>(new TestEventArgData { TestString = "ttteeesssttt" });
+            var eventArgs = new TestEventArgData { TestString = "ttteeesssttt" };
 
             // Act
             _agent.SendEvent(ExpectedEventTopic, eventArgs);
 
             // Assert
-            Assert.AreEqual(eventArgs.EventData.TestString, actualEventString, "Sending the event did not invoke the event topic handlers.");
+            Assert.AreEqual(eventArgs.TestString, actualEventString, "Sending the event did not invoke the event topic handlers.");
         }
 
         [TestMethod]
