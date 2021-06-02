@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using MachEcs.Tests.TestClasses;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using SubC.MachEcs;
 using SubC.MachEcs.Events;
 
@@ -11,13 +9,11 @@ namespace MachEcs.Tests
     [TestClass]
     public sealed class MachAgentTestsEvents
     {
-        private static readonly MachEventTopic<TestEventArgData> ExpectedEventTopic = new TestEventTopic();
-
         private EventManager AgentEventManager =>
             TestUtilities.GetPrivateInstanceField<EventManager>(_agent, "_eventManager");
 
-        private IDictionary<IMachEventTopic, IMachEventSubscribers> EventManagerTopicSubscriptions =>
-            TestUtilities.GetPrivateInstanceField<IDictionary<IMachEventTopic, IMachEventSubscribers>>(AgentEventManager, "_topicSubscriptions");
+        private IDictionary<string, IMachEventSubscribers> EventManagerTopicSubscriptions =>
+            TestUtilities.GetPrivateInstanceField<IDictionary<string, IMachEventSubscribers>>(AgentEventManager, "_eventSubscriptions");
         
         private MachAgent _agent = null;
 
@@ -28,118 +24,81 @@ namespace MachEcs.Tests
         }
 
         [TestMethod]
-        public void RegisterEventTopic_WhenInvoked_RegistersEventTopic()
+        public void RegisterEvent_WhenGivenNewType_RegistersNewType()
         {
             // Arrange
-            var registeredTopicsBefore = EventManagerTopicSubscriptions.Count;
+            var registrationsBefore = EventManagerTopicSubscriptions.Count;
 
             // Act
-            _agent.RegisterEventTopic(ExpectedEventTopic);
+            AgentEventManager.RegisterEvent<TestEventArgData>();
 
             // Assert
-            Assert.AreEqual(0, registeredTopicsBefore, "Event topics were registered before registering topic.");
-            Assert.IsTrue(EventManagerTopicSubscriptions.ContainsKey(ExpectedEventTopic), "Event topic was not registered.");
+            Assert.AreEqual(0, registrationsBefore, "There were events registered before registering event.");
+            Assert.AreEqual(1, EventManagerTopicSubscriptions.Count, "Exactly one event was not registered.");
         }
 
         [TestMethod]
-        public void RemoveAllSubscribersFromEvent_WhenPassedTopic_RemovesAllSubscribers()
+        public void SendEvent_WhenGivenEventArgInstance_InvokesSubscribers()
         {
             // Arrange
-            var testEventHandler = new TestEventHandler();
-            _agent.RegisterEventTopic(ExpectedEventTopic);
-            _agent.SubscribeToEventTopic(ExpectedEventTopic, testEventHandler.TestHandler);
-            var subscribersBefore =
-                (EventManagerTopicSubscriptions[ExpectedEventTopic] as MachEventSubscribers<TestEventArgData>).Subscribers.GetInvocationList().Length;
+            AgentEventManager.RegisterEvent<TestEventArgData>();
+            var subscriberInvoked = false;
+            AgentEventManager.SubscribeToEvent<TestEventArgData>((x) => { subscriberInvoked = true; });
 
             // Act
-            _agent.RemoveAllSubscribersFromEvent(ExpectedEventTopic);
+            AgentEventManager.SendEvent(new TestEventArgData());
 
             // Assert
-            Assert.AreEqual(1, subscribersBefore, "Subscribing did not add method to handlers.");
-            Assert.AreEqual(
-                null,
-                (EventManagerTopicSubscriptions[ExpectedEventTopic] as MachEventSubscribers<TestEventArgData>).Subscribers,
-                "Removing all subscribers did not remove method from handlers.");
+            Assert.IsTrue(subscriberInvoked, "Sending event did not invoke subscribers.");
         }
 
         [TestMethod]
-        public void SendEvent_WhenInvoked_EventHandlerInvoked()
+        public void SubscribeToEvent_WhenGivenEventHandler_AddsToSubscribers()
         {
             // Arrange
-            _agent.RegisterEventTopic(ExpectedEventTopic);
-            var actualEventString = string.Empty;
-            _agent.SubscribeToEventTopic(
-                ExpectedEventTopic,
-                (eventArgs) =>
-                {
-                    actualEventString = eventArgs.TestString;
-                });
-            var eventArgs = new TestEventArgData { TestString = "ttteeesssttt" };
+            AgentEventManager.RegisterEvent<TestEventArgData>();
+            var eventSubscribers = EventManagerTopicSubscriptions[nameof(TestEventArgData)] as MachEventSubscribers<TestEventArgData>;
+            var subscribers = eventSubscribers.MachEventHandlers?.GetInvocationList();
 
             // Act
-            _agent.SendEvent(ExpectedEventTopic, eventArgs);
+            AgentEventManager.SubscribeToEvent<TestEventArgData>((x) => { });
 
             // Assert
-            Assert.AreEqual(eventArgs.TestString, actualEventString, "Sending the event did not invoke the event topic handlers.");
+            Assert.IsNull(subscribers, "Event handlers were subscribed before running test.");
+            Assert.IsNotNull(eventSubscribers.MachEventHandlers?.GetInvocationList(), "Event handlers were not subscribed after running test.");
         }
 
         [TestMethod]
-        public void SubscribeToEventTopic_WhenPassedMethod_SubscribesMethod()
+        public void UnregisterEvent_WhenInvokedWithPreviouslyRegisteredEvent_RemovesEvent()
         {
             // Arrange
-            var testEventHandler = new TestEventHandler();
-            _agent.RegisterEventTopic(ExpectedEventTopic);
+            AgentEventManager.RegisterEvent<TestEventArgData>();
+            var countBefore = EventManagerTopicSubscriptions.Count;
 
             // Act
-            _agent.SubscribeToEventTopic(ExpectedEventTopic, testEventHandler.TestHandler);
+            AgentEventManager.UnregisterEvent<TestEventArgData>();
 
             // Assert
-            var eventSubscribers = EventManagerTopicSubscriptions[ExpectedEventTopic] as MachEventSubscribers<TestEventArgData>;
-            MachEventTopic<TestEventArgData>.MachEventHandler methodAsDelegate = testEventHandler.TestHandler;
-            Assert.AreEqual(1, eventSubscribers.Subscribers.GetInvocationList().Length, "Method was not added to event topic subscriptions.");
-            Assert.AreEqual(
-                (MachEventTopic<TestEventArgData>.MachEventHandler)testEventHandler.TestHandler,
-                eventSubscribers.Subscribers.GetInvocationList()[0],
-                "Method subscribed to event topic was not expected method.");
+            Assert.AreEqual(1, countBefore, "Registering event did not add it to subscriptions.");
+            Assert.AreEqual(0, EventManagerTopicSubscriptions.Count, "Unregistering event did not remove it from subscriptions.");
         }
 
         [TestMethod]
-        public void UnregisterEventTopic_WhenInvoked_EventTopicIsUnregistered()
+        public void UnsubscribeFromEvent_WhenGivenMethod_RemovesMethodFromSubscriptions()
         {
             // Arrange
-            _agent.RegisterEventTopic(ExpectedEventTopic);
-            bool topicRegisteredBefore = EventManagerTopicSubscriptions.ContainsKey(ExpectedEventTopic);
+            AgentEventManager.RegisterEvent<TestEventArgData>();
+            var eventHandler = new HandleMachEvent<TestEventArgData>((x) => { });
+            AgentEventManager.SubscribeToEvent(eventHandler);
+            var subscribers = EventManagerTopicSubscriptions[nameof(TestEventArgData)] as MachEventSubscribers<TestEventArgData>;
+            var subscribersBefore = subscribers.MachEventHandlers?.GetInvocationList();
 
             // Act
-            _agent.UnregisterEventTopic(ExpectedEventTopic);
+            AgentEventManager.UnsubscribeFromEvent(eventHandler);
 
             // Assert
-            Assert.IsTrue(topicRegisteredBefore, "Event topic was not registered.");
-            Assert.IsFalse(EventManagerTopicSubscriptions.ContainsKey(ExpectedEventTopic), "Event topic was not unregistered.");
-        }
-
-        [TestMethod]
-        public void UnsubscribeFromEventTopic_WhenInvoked_RemovesSubscribedMethodFromTopic()
-        {
-            // Arrange
-            var mockEventHandler = new Mock<MachEventTopic<TestEventArgData>.MachEventHandler>();
-            _agent.RegisterEventTopic(ExpectedEventTopic);
-            _agent.SubscribeToEventTopic(ExpectedEventTopic, mockEventHandler.Object);
-#pragma warning disable CS0252
-            var subscribedMethodBefore = (EventManagerTopicSubscriptions[ExpectedEventTopic] as MachEventSubscribers<TestEventArgData>)
-                .Subscribers
-                .GetInvocationList()
-                .ToList()
-                .FirstOrDefault(x => x == mockEventHandler.Object);
-#pragma warning restore CS0252
-
-            // Act
-            _agent.UnsubscribeFromEventTopic(ExpectedEventTopic, mockEventHandler.Object);
-
-            // Assert
-            Assert.IsNotNull(subscribedMethodBefore, "Method was not subscribed before unsubscribing.");
-            var expectedEventSubscribers = EventManagerTopicSubscriptions[ExpectedEventTopic] as MachEventSubscribers<TestEventArgData>;
-            Assert.IsNull(expectedEventSubscribers.Subscribers, "Method was not unsubscribed.");
+            Assert.IsNotNull(subscribersBefore, "Subscribing to event did not add handler.");
+            Assert.IsNull(subscribers.MachEventHandlers?.GetInvocationList(), "Unsubscribing from event did not remove event handler.");
         }
     }
 }

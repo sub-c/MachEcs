@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
-using System.Threading.Tasks;
 using SubC.MachEcs.Components;
 using SubC.MachEcs.Entities;
 using SubC.MachEcs.Events;
@@ -155,12 +154,11 @@ namespace SubC.MachEcs
             => _componentManager.RegisterComponentsInAssembly(assembly);
 
         /// <summary>
-        /// Registers a <see cref="MachEventTopic{T}"/> as an event topic.
+        /// Registers an event in this <see cref="MachAgent"/>, identified by the generic type.
         /// </summary>
-        /// <typeparam name="T">The data type included with the event arguments.</typeparam>
-        /// <param name="eventTopic">The unique class-reference of the event topic.</param>
-        public void RegisterEventTopic<T>(MachEventTopic<T> eventTopic)
-            => _eventManager.RegisterEventTopic<T>(eventTopic);
+        /// <typeparam name="T">The event arguments that identify this event.</typeparam>
+        public void RegisterEvent<T>()
+            => _eventManager.RegisterEvent<T>();
 
         /// <summary>
         /// Registers a new <see cref="MachSystem"/> and returns the registered instance.
@@ -178,13 +176,6 @@ namespace SubC.MachEcs
         /// <param name="assembly">The assembly to scan the types of.</param>
         public void RegisterSystemsInAssembly(Assembly assembly)
             => _systemManager.RegisterSystemsInAssembly(assembly, this);
-
-        /// <summary>
-        /// Removes all subscribers from an event topic.
-        /// </summary>
-        /// <param name="eventTopic">The event topic to remove all subscribers from.</param>
-        public void RemoveAllSubscribersFromEvent<T>(MachEventTopic<T> eventTopic)
-            => _eventManager.RemoveAllSubscribersFromEvent(eventTopic);
 
         /// <summary>
         /// Removes a component from the singleton entity.
@@ -209,24 +200,12 @@ namespace SubC.MachEcs
         }
 
         /// <summary>
-        /// Invoke all subscribers to a <see cref="MachEventTopic{T}"/>, passing the event argument data.
+        /// Sends the event argument to all subscribers to the event argument type.
         /// </summary>
-        /// <typeparam name="T">The data type included in the event argument.</typeparam>
-        /// <param name="eventTopic">The event topic to invoke subscribers of.</param>
-        /// <param name="eventArgs">The event argument data to pass to each subscriber.</param>
-        public void SendEvent<T>(MachEventTopic<T> eventTopic, T eventArgs)
-            => _eventManager.SendEvent(eventTopic, eventArgs);
-
-        /// <summary>
-        /// Invoke all subscribers to a <see cref="MachEventTopic{T}"/> asynchronously, passing the event argument
-        /// data.
-        /// </summary>
-        /// <typeparam name="T">The data type included in the event argument.</typeparam>
-        /// <param name="eventTopic">The event topic to invoke subscribers of.</param>
-        /// <param name="eventArgs">The event argument data to pass to each subscriber.</param>
-        /// <returns></returns>
-        public async Task SendEventAsync<T>(MachEventTopic<T> eventTopic, T eventArgs)
-            => await _eventManager.SendEventAsync(eventTopic, eventArgs);
+        /// <typeparam name="T">Event argument type.</typeparam>
+        /// <param name="eventArgs">Instance of the event argument data.</param>
+        public void SendEvent<T>(T eventArgs)
+            => _eventManager.SendEvent(eventArgs);
 
         /// <summary>
         /// Sets the signature of a given system.
@@ -238,13 +217,12 @@ namespace SubC.MachEcs
             => _systemManager.SetSystemSignature<T>(signature);
 
         /// <summary>
-        /// Subscribes an event handler for a given <see cref="MachEventTopic{T}"/>.
+        /// Subscribes an event handler method to an event (identified by the generic type).
         /// </summary>
-        /// <typeparam name="T">The data type included in the event argument.</typeparam>
-        /// <param name="eventTopic">The event topic to subscribe to.</param>
-        /// <param name="eventHandler">The method to handle events of the <see cref="MachEventTopic{T}"/>.</param>
-        public void SubscribeToEventTopic<T>(MachEventTopic<T> eventTopic, MachEventTopic<T>.MachEventHandler eventHandler)
-            => _eventManager.SubscribeToEventTopic(eventTopic, eventHandler);
+        /// <typeparam name="T">Event argument type.</typeparam>
+        /// <param name="eventHandler">Method to be invoked when event is invoked.</param>
+        public void SubscribeToEvent<T>(HandleMachEvent<T> eventHandler)
+            => _eventManager.SubscribeToEvent<T>(eventHandler);
 
         /// <summary>
         /// Gets a summary of active and free entities, componenets, and systems.
@@ -257,19 +235,25 @@ namespace SubC.MachEcs
             $"Systems Active: {SystemsActive}";
 
         /// <summary>
-        /// Unregister a <see cref="MachEventTopic{T}"/> as a topic, and removes all subscribers.
+        /// Unregisters an event and all subscribers to it, identified by the generic type.
         /// </summary>
-        /// <param name="eventTopic">The event topic to unregister.</param>
-        public void UnregisterEventTopic<T>(MachEventTopic<T> eventTopic)
-            => _eventManager.UnregisterEventTopic(eventTopic);
+        /// <typeparam name="T">Event argument type.</typeparam>
+        public void UnregisterEvent<T>()
+            => _eventManager.UnregisterEvent<T>();
 
         /// <summary>
-        /// Unsubscribes an event handler for a given <see cref="MachEventTopic{T}"/>.
+        /// Removes all event handler methods from an event, identified by the generic type.
         /// </summary>
-        /// <typeparam name="T">The data type included in the event argument.</typeparam>
-        /// <param name="eventTopic">The event topic to unsubscribe from.</param>
-        /// <param name="eventHandler">The method to remove as a handler of the <see cref="MachEventTopic{T}"/>.</param>
-        public void UnsubscribeFromEventTopic<T>(MachEventTopic<T> eventTopic, MachEventTopic<T>.MachEventHandler eventHandler)
-            => _eventManager.UnsubscribeFromEventTopic(eventTopic, eventHandler);
+        /// <typeparam name="T">Event argument type.</typeparam>
+        public void UnsubscribeAllFromEvent<T>()
+            => _eventManager.UnsubscribeAllFromEvent<T>();
+
+        /// <summary>
+        /// Removes an event handler from an event, identified by the generic type.
+        /// </summary>
+        /// <typeparam name="T">Event argument type.</typeparam>
+        /// <param name="eventHandler">Event handler method.</param>
+        public void UnsubscribeFromEvent<T>(HandleMachEvent<T> eventHandler)
+            => _eventManager.UnsubscribeFromEvent<T>(eventHandler);
     }
 }
