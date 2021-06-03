@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Threading.Tasks;
 using SubC.MachEcs.Components;
 using SubC.MachEcs.Entities;
 using SubC.MachEcs.Events;
@@ -206,6 +207,15 @@ namespace SubC.MachEcs
         /// <param name="eventArgs">Instance of the event argument data.</param>
         public void SendEvent<T>(T eventArgs)
             => _eventManager.SendEvent(eventArgs);
+
+        /// <summary>
+        /// Sends the event argument asynchronously to all subscribers to the event argument type.
+        /// </summary>
+        /// <typeparam name="T">Event argument type.</typeparam>
+        /// <param name="eventArgs">Instance of the event argument data.</param>
+        /// <returns></returns>
+        public async Task SendEventAsync<T>(T eventArgs)
+            => await _eventManager.SendEventAsync(eventArgs);
 
         /// <summary>
         /// Sets the signature of a given system.
