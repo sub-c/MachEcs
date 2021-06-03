@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace SubC.MachEcs.Events
 {
@@ -26,6 +27,12 @@ namespace SubC.MachEcs.Events
         {
             var eventSubscribers = GetEventSubscribers<T>();
             eventSubscribers.MachEventHandlers?.Invoke(eventArgs);
+        }
+
+        public async Task SendEventAsync<T>(T eventArgs)
+        {
+            var eventSubscribers = GetEventSubscribers<T>();
+            await Task.Factory.StartNew(() =>  eventSubscribers.MachEventHandlers?.Invoke(eventArgs));
         }
 
         public void SubscribeToEvent<T>(HandleMachEvent<T> eventHandler)
