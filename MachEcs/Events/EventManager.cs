@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -13,14 +14,14 @@ namespace SubC.MachEcs.Events
 
     internal sealed class EventManager
     {
-        private readonly IDictionary<string, IMachEventSubscribers> _eventSubscriptions = new Dictionary<string, IMachEventSubscribers>();
+        private readonly IDictionary<Type, IMachEventSubscribers> _eventSubscriptions = new Dictionary<Type, IMachEventSubscribers>();
 
         public void RegisterEvent<T>()
         {
-            var typeName = typeof(T).Name;
-            Debug.Assert(!_eventSubscriptions.ContainsKey(typeName), $"Event {typeName} is already registered.");
+            var eventArgType = typeof(T);
+            Debug.Assert(!_eventSubscriptions.ContainsKey(eventArgType), $"Event {eventArgType.Name} is already registered.");
             var eventSubscribers = new MachEventSubscribers<T>();
-            _eventSubscriptions.Add(typeName, eventSubscribers);
+            _eventSubscriptions.Add(eventArgType, eventSubscribers);
         }
 
         public void SendEvent<T>(T eventArgs)
@@ -43,9 +44,9 @@ namespace SubC.MachEcs.Events
 
         public void UnregisterEvent<T>()
         {
-            var typeName = typeof(T).Name;
-            Debug.Assert(_eventSubscriptions.ContainsKey(typeName), $"Type {typeName} is not currently registered.");
-            _eventSubscriptions.Remove(typeName);
+            var eventArgType = typeof(T);
+            Debug.Assert(_eventSubscriptions.ContainsKey(eventArgType), $"Type {eventArgType.Name} is not currently registered.");
+            _eventSubscriptions.Remove(eventArgType);
         }
 
         public void UnsubscribeAllFromEvent<T>()
@@ -62,9 +63,9 @@ namespace SubC.MachEcs.Events
 
         private MachEventSubscribers<T> GetEventSubscribers<T>()
         {
-            var typeName = typeof(T).Name;
-            Debug.Assert(_eventSubscriptions.ContainsKey(typeName), $"Type {typeName} does not exist in the event subscriptions dictionary.");
-            return _eventSubscriptions[typeName] as MachEventSubscribers<T>;
+            var eventArgType = typeof(T);
+            Debug.Assert(_eventSubscriptions.ContainsKey(eventArgType), $"Type {eventArgType.Name} does not exist in the event subscriptions dictionary.");
+            return _eventSubscriptions[eventArgType] as MachEventSubscribers<T>;
         }
     }
 }
