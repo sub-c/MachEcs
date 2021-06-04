@@ -11,7 +11,7 @@ namespace SubC.MachEcs.Components
         public int ComponentsActive => _nextComponentBit;
         public int ComponentsFree => MachSignature.MaxSignatureBits - _nextComponentBit;
 
-        private readonly Dictionary<string, IComponentCache> _componentCaches = new Dictionary<string, IComponentCache>();
+        private readonly Dictionary<Type, IComponentCache> _componentCaches = new Dictionary<Type, IComponentCache>();
         private int _nextComponentBit = 0;
 
         public void AddComponent<T>(MachEntity entity, T component)
@@ -37,9 +37,9 @@ namespace SubC.MachEcs.Components
         public MachSignature GetComponentSignature<T>()
             where T : IMachComponent
         {
-            var typeName = typeof(T).Name;
-            Debug.Assert(_componentCaches.ContainsKey(typeName), $"Component was not registered before use: {typeName}.");
-            return _componentCaches[typeName].Signature;
+            var componentType = typeof(T);
+            Debug.Assert(_componentCaches.ContainsKey(componentType), $"Component was not registered before use: {componentType.Name}.");
+            return _componentCaches[componentType].Signature;
         }
 
         public void RegisterComponent<T>()
@@ -54,7 +54,7 @@ namespace SubC.MachEcs.Components
             componentCache.Signature.EnableBit(_nextComponentBit);
             ++_nextComponentBit;
 
-            _componentCaches.Add(typeof(T).Name, componentCache);
+            _componentCaches.Add(typeof(T), componentCache);
         }
 
         public void RegisterComponentsInAssembly(Assembly assembly)
@@ -72,7 +72,7 @@ namespace SubC.MachEcs.Components
                     componentCache.Signature.EnableBit(_nextComponentBit);
                     ++_nextComponentBit;
 
-                    _componentCaches.Add(type.Name, componentCache);
+                    _componentCaches.Add(type, componentCache);
                 }
             }
         }
@@ -86,9 +86,9 @@ namespace SubC.MachEcs.Components
         private ComponentCache<T> GetComponentCache<T>()
             where T : IMachComponent
         {
-            var typeName = typeof(T).Name;
-            Debug.Assert(_componentCaches.ContainsKey(typeName), $"Component not registered before use.");
-            return _componentCaches[typeName] as ComponentCache<T>;
+            var componentType = typeof(T);
+            Debug.Assert(_componentCaches.ContainsKey(componentType), $"Component {componentType.Name} not registered before use.");
+            return _componentCaches[componentType] as ComponentCache<T>;
         }
     }
 }

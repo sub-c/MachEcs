@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MachEcs.Tests.TestClasses;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SubC.MachEcs;
@@ -12,8 +13,8 @@ namespace MachEcs.Tests
         private EventManager AgentEventManager =>
             TestUtilities.GetPrivateInstanceField<EventManager>(_agent, "_eventManager");
 
-        private IDictionary<string, IMachEventSubscribers> EventManagerTopicSubscriptions =>
-            TestUtilities.GetPrivateInstanceField<IDictionary<string, IMachEventSubscribers>>(AgentEventManager, "_eventSubscriptions");
+        private IDictionary<Type, IMachEventSubscribers> EventManagerTopicSubscriptions =>
+            TestUtilities.GetPrivateInstanceField<IDictionary<Type, IMachEventSubscribers>>(AgentEventManager, "_eventSubscriptions");
         
         private MachAgent _agent = null;
 
@@ -57,7 +58,7 @@ namespace MachEcs.Tests
         {
             // Arrange
             AgentEventManager.RegisterEvent<TestEventArgData>();
-            var eventSubscribers = EventManagerTopicSubscriptions[nameof(TestEventArgData)] as MachEventSubscribers<TestEventArgData>;
+            var eventSubscribers = EventManagerTopicSubscriptions[typeof(TestEventArgData)] as MachEventSubscribers<TestEventArgData>;
             var subscribers = eventSubscribers.MachEventHandlers?.GetInvocationList();
 
             // Act
@@ -90,7 +91,7 @@ namespace MachEcs.Tests
             AgentEventManager.RegisterEvent<TestEventArgData>();
             var eventHandler = new HandleMachEvent<TestEventArgData>((x) => { });
             AgentEventManager.SubscribeToEvent(eventHandler);
-            var subscribers = EventManagerTopicSubscriptions[nameof(TestEventArgData)] as MachEventSubscribers<TestEventArgData>;
+            var subscribers = EventManagerTopicSubscriptions[typeof(TestEventArgData)] as MachEventSubscribers<TestEventArgData>;
             var subscribersBefore = subscribers.MachEventHandlers?.GetInvocationList();
 
             // Act
