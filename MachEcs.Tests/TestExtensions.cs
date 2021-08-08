@@ -2,9 +2,9 @@
 
 namespace MachEcs.Tests
 {
-    internal static class TestUtilities
+    internal static class TestExtensions
     {
-        public static T GetPrivateInstanceField<T>(object instance, string fieldName)
+        public static T GetPrivateField<T>(this object instance, string fieldName)
         {
             var field = instance.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
             return (T)field.GetValue(instance);

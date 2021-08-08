@@ -1,13 +1,14 @@
 ﻿using System;
-using SubC.MachEcs.Systems;
+using SubC.MachEcs;
 
 namespace MachEcs.Tests.TestClasses
 {
-    public sealed class TestSystem : MachSystem
+    internal sealed class TestSystem : MachSystem
     {
-        protected override Type[] ComponentSignatureTypes => new Type[]
+        protected override Type[] ComponentTypes => new Type[]
         {
-            typeof(TestSystemComponent)
+            typeof(TestComponent1),
+            typeof(TestComponent2)
         };
     }
 }
