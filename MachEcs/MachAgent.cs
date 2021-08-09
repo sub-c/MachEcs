@@ -8,6 +8,7 @@ namespace SubC.MachEcs
     {
         private readonly ComponentWorker _componentWorker;
         private readonly EntityWorker _entityWorker;
+        private readonly MachEntity _singletonEntity = new MachEntity();
         private readonly SystemWorker _systemWorker;
 
         public MachAgent(int maximumEntities)
@@ -17,6 +18,12 @@ namespace SubC.MachEcs
             _systemWorker = new SystemWorker();
         }
 
+        public void AddComponent<T>(T component)
+            where T : IMachComponent
+        {
+            AddComponent(_singletonEntity, component);
+        }
+
         public void AddComponent<T>(MachEntity entity, T component)
             where T : IMachComponent
         {
@@ -24,6 +31,11 @@ namespace SubC.MachEcs
             var componentSignature = _componentWorker.GetComponentSignature<T>();
             entity.Signature.Add(componentSignature);
             _systemWorker.EntitySignatureChanged(entity);
+        }
+
+        public void AddComponents(params IMachComponent[] components)
+        {
+            AddComponents(_singletonEntity, components);
         }
 
         public void AddComponents(MachEntity entity, params IMachComponent[] components)
@@ -72,6 +84,12 @@ namespace SubC.MachEcs
             where T : MachSystem, new()
         {
             return _systemWorker.RegisterSystem<T>(this);
+        }
+
+        public void RemoveComponent<T>()
+            where T : IMachComponent
+        {
+            RemoveComponent<T>(_singletonEntity);
         }
 
         public void RemoveComponent<T>(MachEntity entity)

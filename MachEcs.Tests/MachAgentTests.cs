@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using MachEcs.Tests.TestClasses;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SubC.MachEcs;
@@ -43,6 +44,28 @@ namespace MachEcs.Tests
             var cache = componentCache.GetPrivateField<IDictionary<MachEntity, TestComponent1>>("_cache");
             Assert.IsTrue(cache.ContainsKey(entity), $"Given entity was not added to cache.");
             Assert.AreEqual(component, cache[entity], $"Given component was not added to cache.");
+        }
+
+        [TestMethod]
+        public void AddComponent_WhenMatchesSystemSignature_AddsToSystem()
+        {
+            // Arrange
+            _agent.RegisterComponent<TestComponent1>();
+            _agent.RegisterComponent<TestComponent2>();
+            var system = _agent.RegisterSystem<TestSystem>();
+            var systemEntities = system.GetPrivateProperty<IEnumerable<MachEntity>>("Entities");
+            var entity = _agent.CreateEntity();
+            var component1 = new TestComponent1();
+            var component2 = new TestComponent2();
+            Assert.IsTrue(systemEntities.Count() == 0, "System has entities present before adding component and entity.");
+
+            // Act
+            _agent.AddComponent(entity, component1);
+            _agent.AddComponent(entity, component2);
+
+            // Assert
+            Assert.IsTrue(systemEntities.Count() == 1, "System did not populate entity into system when signatures matched.");
+            Assert.AreEqual(entity, systemEntities.First(), "Entity populated in system did not match the entity with components added to it.");
         }
 
         [TestMethod]
@@ -106,6 +129,13 @@ namespace MachEcs.Tests
         public void GetComponentSignature_WhenGivenType_ReturnsSignature()
         {
             // Arrange
+            _agent.RegisterComponent<TestComponent1>();
+
+            // Act
+            var componentSignature = _agent.GetComponentSignature(typeof(TestComponent1));
+
+            // Assert
+            Assert.IsNotNull(componentSignature, "Signature was null.");
         }
 
         [TestMethod]
@@ -128,16 +158,72 @@ namespace MachEcs.Tests
         [TestMethod]
         public void RegisterComponents_WhenGivenAssembly_RegistersComponents()
         {
+            // Arrange
+
+            // Act
+            _agent.RegisterComponents(Assembly.GetExecutingAssembly());
+
+            // Assert
+            Assert.IsTrue(
+                ComponentWorkerCaches.ContainsKey(typeof(TestComponent1)),
+                $"{nameof(TestComponent1)} was not registered from assembly.");
+            Assert.IsTrue(
+                ComponentWorkerCaches.ContainsKey(typeof(TestComponent2)),
+                $"{nameof(TestComponent2)} was not registered from assembly.");
         }
 
         [TestMethod]
         public void RegisterSystem_WhenGivenGenericType_ReturnsSystemInstance()
         {
+            // Arrange
+            _agent.RegisterComponent<TestComponent1>();
+            _agent.RegisterComponent<TestComponent2>();
+
+            // Act
+            var system = _agent.RegisterSystem<TestSystem>();
+
+            // Assert
+            Assert.IsNotNull(system, "System was null.");
         }
 
         [TestMethod]
         public void RemoveComponent_WhenGivenGenericType_RemovesFromEntity()
         {
+            // Arrange
+            _agent.RegisterComponent<TestComponent1>();
+            var entity = _agent.CreateEntity();
+            var component = new TestComponent1();
+            _agent.AddComponent(entity, component);
+            var componentCache = (ComponentCache<TestComponent1>)ComponentWorkerCaches[typeof(TestComponent1)];
+            var cache = componentCache.GetPrivateField<IDictionary<MachEntity, TestComponent1>>("_cache");
+            Assert.IsTrue(cache.ContainsKey(entity), "Entity was not added to component cache.");
+
+            // Act
+            _agent.RemoveComponent<TestComponent1>(entity);
+
+            // Assert
+            Assert.IsFalse(cache.ContainsKey(entity), "Entity was not removed from component cache.");
+        }
+
+        [TestMethod]
+        public void RemoveComponent_WhenEntityNoLongerMatchesSystemSignature_EntityRemovedFromSystem()
+        {
+            // Arrange
+            _agent.RegisterComponent<TestComponent1>();
+            _agent.RegisterComponent<TestComponent2>();
+            var system = _agent.RegisterSystem<TestSystem>();
+            var systemEntities = system.GetPrivateProperty<IEnumerable<MachEntity>>("Entities");
+            var entity = _agent.CreateEntity();
+            _agent.AddComponent(entity, new TestComponent1());
+            _agent.AddComponent(entity, new TestComponent2());
+            Assert.IsTrue(systemEntities.Count() == 1, "Entity was not added to system.");
+            Assert.AreEqual(entity, systemEntities.First(), "Entity added to system was not the same one as components were added to.");
+
+            // Act
+            _agent.RemoveComponent<TestComponent2>(entity);
+
+            // Assert
+            Assert.IsTrue(systemEntities.Count() == 0, "Entity with non-matching components was still present in system entities.");
         }
     }
 }
