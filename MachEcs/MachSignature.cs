@@ -1,4 +1,6 @@
-﻿namespace SubC.MachEcs
+﻿using System.Diagnostics;
+
+namespace SubC.MachEcs
 {
     /// <summary>
     /// This class represents a grouping of components condensed into a (bit) signature for quick comparing with
@@ -17,11 +19,15 @@
 
         internal void DisableBit(int position)
         {
+            Debug.Assert(position >= 0, "Bit position to disable is not positive.");
+            Debug.Assert(position < MaxSupportedSignatures, "Bit position to disable exceeds maximum supported signatures.");
             _bits &= ~(ulong)1 << position;
         }
 
         internal void EnableBit(int position)
         {
+            Debug.Assert(position >= 0, "Bit position to enable is not positive.");
+            Debug.Assert(position < MaxSupportedSignatures, "Bit position to enable exceeeds maximum supported signatures.");
             _bits |= (ulong)1 << position;
         }
 
