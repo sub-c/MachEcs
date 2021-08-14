@@ -1,20 +1,40 @@
 ﻿# MachEcs
 MachEcs is an entity-component-system (ECS) library for C# applications:
 * ECS is an [architecture pattern](https://www.guru99.com/entity-component-system.html), where state and logic are separated from each other.
-* Entities represent things/objects, and have components added/removed to them.
-* Components hold a state and have no logic.
-* Systems have logic and have no state.
-* Systems iterate over entities, using their state (components) to perform work/output.
+* Components only hold state/data.
+* Entities only are groupings of components.
+* Systems only have logic, operating on entities that have components they are interested in.
 
 # Installation
 Add the [Nuget package MachEcs](https://www.nuget.org/packages/MachEcs/) to your .NET project.
 
 # Basic Usage
-* Register your components with either ```MachAgent.RegisterComponent<T>()``` or ```MachAgent.RegisterComponentsInAssembly()```.
-* Make sure your systems inherit ```MachAgent.Systems.MachSystem``` and they implement an array of the components they are interested working with via ```MachSystem.ComponentSignatureTypes = new Type[] { ... }```.
-* Register your systems with either ```MachAgent.RegisterSystem<T>()``` or ```MachAgent.RegisterSystemsInAssembly()```.
-* Create entities with ```MachAgent.CreateEntity()```.
-* New-up a (previously registered) component instance.
-* Add the component to your entity with ```MachAgent.AddComponent<T>()```, or add the component to the singleton entity by not providing an entity parameter to ```AddComponent<T>()```.
-* Your system(s) will have the entity listed in ```MachSystem.Entities```, if the entity's attached components match the system signature (at minimum, more components can be attached).
-* Your systems can use the ```MachSystem.Agent``` to get the components of ```MachSystem.Entities``` by calling ```MachAgent.GetComponent<T>()```.
+* Add the [Nuget package](https://www.nuget.org/packages/MachEcs/) to your C# project.
+* Add ```using SubC.MachEcs;``` to your using statements.
+* Ensure your component classes inherit from ```IMachComponent```.
+* Ensure your system classes inherit/implement ```MachSystem```.
+* New up a MachAgent with ```var machAgent = new MachAgent(5000);```.
+* Register your components with ```machAgent.RegisterComponent<YourComponentType>();```.
+* Register your systems with ```var yourSystem = machAgent.RegisterSystem<YourSystemType>();```.
+* Systems must implement a type array of components they are interested in working with: entities with matching components will automatically be populated into those systems ```Entities``` member property.
+* Full example:
+```C#
+using SubC.MachEcs;
+
+var machAgent = new MachAgent(5000);
+machAgent.RegisterComponent<MyPlayerStatusComponent>();
+var myPlayerStatusSystem = machAgent.RegisterSystem<MyPlayerStatusSystem>();
+var myPlayerEntity = machAgent.CreateEntity();
+var myplayerStatus = new MyPlayerStatusComponent { Lives = 5 };
+machAgent.AddComponent(myPlayerEntity, myPlayerStatus);
+
+myPlayerStatusSystem.DoWork(); // system can enumerate the Entities property to automatically get the myPlayerEntity
+```
+* Systems can use their Agent property to then get at the components from the entities:
+```C#
+foreach (var entity in Entities)
+{
+    var playerStatus = Agent.GetComponent<MyPlayerStatusComponent>(entity);
+    // do work with each playerStatus...
+}
+```
