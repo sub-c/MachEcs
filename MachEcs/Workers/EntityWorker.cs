@@ -10,7 +10,7 @@ namespace SubC.MachEcs.Workers
         public EntityWorker(int maximumEntities)
         {
             _entities = new Queue<MachEntity>(maximumEntities);
-            for (int currentCount = 0; currentCount < maximumEntities; ++currentCount)
+            for (var currentCount = 0; currentCount < maximumEntities; ++currentCount)
             {
                 _entities.Enqueue(new MachEntity());
             }

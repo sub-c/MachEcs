@@ -1,5 +1,9 @@
 ﻿namespace SubC.MachEcs
 {
+    /// <summary>
+    /// This class represents a grouping of components condensed into a (bit) signature for quick comparing with
+    /// other signatures when checking for matching components.
+    /// </summary>
     public sealed class MachSignature
     {
         internal const int MaxSupportedSignatures = sizeof(ulong) * 8;

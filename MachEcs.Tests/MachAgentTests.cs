@@ -164,6 +164,7 @@ namespace MachEcs.Tests
             _agent.RegisterComponents(Assembly.GetExecutingAssembly());
 
             // Assert
+            Assert.AreEqual(2, ComponentWorkerCaches.Count, $"Exactly two components in the assembly were not registered.");
             Assert.IsTrue(
                 ComponentWorkerCaches.ContainsKey(typeof(TestComponent1)),
                 $"{nameof(TestComponent1)} was not registered from assembly.");

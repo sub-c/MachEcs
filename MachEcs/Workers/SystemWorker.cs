@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 
 namespace SubC.MachEcs.Workers
@@ -55,6 +56,9 @@ namespace SubC.MachEcs.Workers
         {
             foreach (var componentType in system.InternalComponentTypes)
             {
+                Debug.Assert(
+                    componentType.GetInterfaces().Contains(typeof(IMachComponent)),
+                    $"Cannot use {componentType.Name} as a component, it does not implement {typeof(IMachComponent).Name}");
                 var componentSignature = agent.GetComponentSignature(componentType);
                 system.Signature.Add(componentSignature);
             }
