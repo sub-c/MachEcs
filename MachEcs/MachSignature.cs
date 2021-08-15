@@ -1,55 +1,54 @@
-﻿namespace SubC.MachEcs
+﻿using System.Diagnostics;
+
+namespace SubC.MachEcs
 {
     /// <summary>
-    /// This class holds the signature bits that represent components in the entity-component-system world.
+    /// This class represents a grouping of components condensed into a (bit) signature for quick comparing with
+    /// other signatures when checking for matching components.
     /// </summary>
     public sealed class MachSignature
     {
-        internal const int MaxSignatureBits = sizeof(ulong) * 8;
+        internal const int MaxSupportedSignatures = sizeof(ulong) * 8;
 
-        private ulong _bitSignature = 0;
+        private ulong _bits;
 
-        /// <summary>
-        /// Adds the bits from the given signature.
-        /// </summary>
-        /// <param name="signature">The signature to add set bits from.</param>
-        public void AddSignature(MachSignature signature)
-            => _bitSignature |= signature._bitSignature;
-
-        /// <summary>
-        /// Removes the set bits from the given signature.
-        /// </summary>
-        /// <param name="signature">The signature to remove set bits from.</param>
-        public void RemoveSignature(MachSignature signature)
-            => _bitSignature &= ~signature._bitSignature;
-
-        /// <summary>
-        /// Get a human-readable string representation of the bit-signature.
-        /// </summary>
-        /// <returns>String representation of the bit-signature.</returns>
-        public override string ToString()
+        internal void Add(MachSignature signature)
         {
-            var bitSignature = string.Empty;
-            for (int i = 0; i < sizeof(ulong); ++i)
-            {
-                bitSignature += (_bitSignature & ((ulong)1 << i)) != 0 ? "1" : "0";
-            }
-            return bitSignature;
+            _bits |= signature._bits;
         }
 
-        internal void DisableBit(int bitPosition)
-            => _bitSignature &= ~(ulong)1 << bitPosition;
+        internal void DisableBit(int position)
+        {
+            Debug.Assert(position >= 0, "Bit position to disable is not positive.");
+            Debug.Assert(position < MaxSupportedSignatures, "Bit position to disable exceeds maximum supported signatures.");
+            _bits &= ~(ulong)1 << position;
+        }
 
-        internal void EnableBit(int bitPosition)
-            => _bitSignature |= (ulong)1 << bitPosition;
+        internal void EnableBit(int position)
+        {
+            Debug.Assert(position >= 0, "Bit position to enable is not positive.");
+            Debug.Assert(position < MaxSupportedSignatures, "Bit position to enable exceeeds maximum supported signatures.");
+            _bits |= (ulong)1 << position;
+        }
 
-        internal bool MatchesSignature(MachSignature signature)
-            => (_bitSignature & signature._bitSignature) == signature._bitSignature;
+        internal bool Matches(MachSignature signature)
+        {
+            return (_bits & signature._bits) == signature._bits;
+        }
 
-        internal void ResetSignature()
-            => _bitSignature = 0;
+        internal void Remove(MachSignature signature)
+        {
+            _bits &= ~signature._bits;
+        }
 
-        internal void SetSignature(MachSignature signature)
-            => _bitSignature = signature._bitSignature;
+        internal void Reset()
+        {
+            _bits = 0;
+        }
+
+        internal void Set(MachSignature signature)
+        {
+            _bits = signature._bits;
+        }
     }
 }

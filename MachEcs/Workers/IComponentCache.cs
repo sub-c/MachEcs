@@ -1,6 +1,4 @@
-﻿using SubC.MachEcs.Entities;
-
-namespace SubC.MachEcs.Components
+﻿namespace SubC.MachEcs.Workers
 {
     internal interface IComponentCache
     {

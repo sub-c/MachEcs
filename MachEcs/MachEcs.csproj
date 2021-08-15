@@ -1,26 +1,26 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>x64</Platforms>
-    <Authors>Sub-C</Authors>
+    <RootNamespace>SubC.MachEcs</RootNamespace>
+    <Version>2.0.0</Version>
+    <Authors>SubC</Authors>
     <Description>An entity-component-system (ECS) library for C#.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/sub-c/MachEcs</PackageProjectUrl>
     <RepositoryUrl>https://github.com/sub-c/MachEcs</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/sub-c/MachEcs</PackageProjectUrl>
     <PackageTags>ecs</PackageTags>
-    <Version>1.5.2</Version>
+    <Product />
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <DocumentationFile></DocumentationFile>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <RootNamespace>SubC.MachEcs</RootNamespace>
-    <AssemblyName>MachEcs</AssemblyName>
   </PropertyGroup>
 
 </Project>
