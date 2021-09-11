@@ -72,6 +72,29 @@ namespace SubC.MachEcs
         }
 
         /// <summary>
+        /// Gets the component from the singleton entity.
+        /// </summary>
+        /// <typeparam name="T">The type of component.</typeparam>
+        /// <returns>The component instance.</returns>
+        public T GetComponent<T>()
+            where T : IMachComponent
+        {
+            return GetComponent<T>(_singletonEntity);
+        }
+
+        /// <summary>
+        /// Gets the component from the given entity.
+        /// </summary>
+        /// <typeparam name="T">The type of component.</typeparam>
+        /// <param name="entity">The entity that has the given component.</param>
+        /// <returns>The component instance.</returns>
+        public T GetComponent<T>(MachEntity entity)
+            where T : IMachComponent
+        {
+            return _componentWorker.GetComponent<T>(entity);
+        }
+
+        /// <summary>
         /// Gets the signature of a component.
         /// </summary>
         /// <typeparam name="T">The component type.</typeparam>

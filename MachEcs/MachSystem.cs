@@ -23,6 +23,10 @@ namespace SubC.MachEcs
 
         /// <summary>
         /// Gets an array of component types that this system is interested in working with.
+        /// <para>
+        /// The types defined must inherit from <see cref="IMachComponent"/> and have been registered with
+        /// <see cref="MachAgent.RegisterComponent{T}"/> prior to registering the system.
+        /// </para>
         /// </summary>
         protected abstract Type[] ComponentTypes { get; }
 
