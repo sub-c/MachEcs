@@ -4,8 +4,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>x64</Platforms>
     <RootNamespace>SubC.MachEcs</RootNamespace>
-    <Version>2.1.0</Version>
-    <Authors>SubC</Authors>
+    <Version>2.1.2</Version>
+    <Authors>Sub-C</Authors>
     <Description>An entity-component-system (ECS) library for C#.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/sub-c/MachEcs</RepositoryUrl>
