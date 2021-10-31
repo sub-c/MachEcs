@@ -141,7 +141,7 @@ namespace SubC.MachEcs
         /// </summary>
         /// <typeparam name="T">The type of system.</typeparam>
         /// <returns>The system instance.</returns>
-        public MachSystem RegisterSystem<T>()
+        public T RegisterSystem<T>()
             where T : MachSystem, new()
         {
             return _systemWorker.RegisterSystem<T>(this);
