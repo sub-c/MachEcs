@@ -17,7 +17,7 @@ namespace SubC.MachEcs.Events
         /// <typeparam name="T">The event type.</typeparam>
         /// <param name="agent">The agent this event exists in.</param>
         /// <param name="listenerMethod">The event handler method.</param>
-        public static void AddEventListener<T>(this MachAgent agent, Action<T> listenerMethod)
+        public static void AddEventHandler<T>(this MachAgent agent, Action<T> listenerMethod)
             where T : IMachEvent
         {
             Debug.Assert(_agentCaches.ContainsKey(agent), "Cannot add event listener, agent is not registered.");
@@ -59,12 +59,12 @@ namespace SubC.MachEcs.Events
         }
 
         /// <summary>
-        /// Removes an event listener method from the given event type.
+        /// Removes an event handling method from the given event type.
         /// </summary>
         /// <typeparam name="T">The event type.</typeparam>
         /// <param name="agent">The agent to remove the event listener from.</param>
         /// <param name="listenerMethod">The event listener method to remove.</param>
-        public static void RemoveEventListener<T>(this MachAgent agent, Action<T> listenerMethod)
+        public static void RemoveEventHandler<T>(this MachAgent agent, Action<T> listenerMethod)
             where T : IMachEvent
         {
             Debug.Assert(_agentCaches.ContainsKey(agent), "Cannot remove event listener, agent is not registered.");
