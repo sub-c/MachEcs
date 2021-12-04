@@ -10,7 +10,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/sub-c/MachEcs</RepositoryUrl>
     <PackageProjectUrl>https://github.com/sub-c/MachEcs</PackageProjectUrl>
-    <PackageTags>ecs</PackageTags>
+    <PackageTags>ecs;machecs;entity component framework</PackageTags>
     <Product />
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
@@ -21,6 +21,8 @@
 
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <RepositoryType>git</RepositoryType>
+    <PackageIcon>machecs-icon.png</PackageIcon>
   </PropertyGroup>
 
 </Project>

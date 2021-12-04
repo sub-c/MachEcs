@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 
 namespace MachEcs.Tests
 {
@@ -14,6 +15,12 @@ namespace MachEcs.Tests
         {
             var property = instance.GetType().GetProperty(propertyName, BindingFlags.Instance | BindingFlags.NonPublic);
             return (T)property.GetValue(instance);
+        }
+
+        public static T GetStaticPrivateField<T>(Type type, string fieldName)
+        {
+            var field = type.GetField(fieldName, BindingFlags.Static | BindingFlags.NonPublic);
+            return (T)field.GetValue(null);
         }
     }
 }

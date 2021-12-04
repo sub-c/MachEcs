@@ -44,8 +44,11 @@ namespace SubC.MachEcs.Events
             where T : IMachEvent
         {
             Debug.Assert(_agentCaches.ContainsKey(agent), "Cannot register event, agent is not registered.");
-            Debug.Assert(!_agentCaches[agent].EventCaches.ContainsKey(typeof(T)), "Cannot register event, event type is already registered.");
-            _agentCaches[agent].EventCaches.Add(typeof(T), new MachEventCache<T>());
+            //Debug.Assert(!_agentCaches[agent].EventCaches.ContainsKey(typeof(T)), "Cannot register event, event type is already registered.");
+            if (!_agentCaches[agent].EventCaches.ContainsKey(typeof(T)))
+            {
+                _agentCaches[agent].EventCaches.Add(typeof(T), new MachEventCache<T>());
+            }
         }
 
         /// <summary>
