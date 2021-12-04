@@ -38,3 +38,33 @@ foreach (var entity in Entities)
     // do work with each playerStatus...
 }
 ```
+
+
+# MachEcs.Events
+MachEcs.Events is an extension library for MachEcs; this library adds event support to the ECS world using the agent (```MachAgent```) as the anchor for registering event handlers and sending events.
+
+# Installation
+Add the [Nuget package](https://www.nuget.org/packages/MachEcs.Events) to your .NET project.
+
+# Basic Usage
+* Add the nuget package as described above.
+* Add ```using SubC.MachEcs.Events``` to your using statements.
+* Register the agent into the event extension by calling the ```RegisterAgentEvents()``` extension method on your agent.
+* Register events with the ```RegisterEvent<T>()``` extension method on your agent. Your event classes/DTOs must implement the ```IMachEvent``` interface.
+* Add event handlers (it is intended that your systems will have methods to handle events) with ```AddEventHandler<T>(Action<T>)``` extension method on your agent.
+* Send events in your program with the ```SendEvent<T>(T)``` extension method on your agent. Using events, you can implement actions without linking the code that raised the event and the code that handles the event.
+
+* Full example:
+```C#
+using SubC.MachEcs.Events;
+
+class MyEventDto : IMachAgent { }
+
+// .... other MachEcs code that, among other things, creates a MachAgent instance called 'agent'...
+agent.RegisterAgentEvents();
+agent.RegisterEvent<MyEventDto>();
+agent.AddEventHandler(SomeMachSystem.SomeEventHandler);
+
+// .... inside some code in a system...
+Agent.SendEvent(new MyEventDto { ... }); // SomeMachSystem.SomeEventHandler() will be invoked and receive the event class
+```

@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>SubC.MachEcs.Events</RootNamespace>
+    <Platforms>x64</Platforms>
+    <Version>2.1.2</Version>
+    <Authors>Sub-C</Authors>
+    <Description>An event system for the entity-component-system library MachEcs for C# programs.</Description>
+    <Copyright></Copyright>
+    <PackageProjectUrl>https://github.com/sub-c/MachEcs</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/sub-c/MachEcs</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>ecs;events;machecs</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageIcon>machecs-icon.png</PackageIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MachEcs\MachEcs.csproj" />
+  </ItemGroup>
+
+</Project>
