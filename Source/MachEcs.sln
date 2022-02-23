@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MachEcs", "MachEcs\MachEcs.csproj", "{F5C7C14B-6C9E-49B4-99B0-7FF467E658F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachEcs.Tests", "MachEcs.Tests\MachEcs.Tests.csproj", "{4D71CD80-D32D-46FF-A5E2-523E2BDA4919}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F5C7C14B-6C9E-49B4-99B0-7FF467E658F7}.Debug|x64.ActiveCfg = Debug|x64
+		{F5C7C14B-6C9E-49B4-99B0-7FF467E658F7}.Debug|x64.Build.0 = Debug|x64
+		{F5C7C14B-6C9E-49B4-99B0-7FF467E658F7}.Release|x64.ActiveCfg = Release|x64
+		{F5C7C14B-6C9E-49B4-99B0-7FF467E658F7}.Release|x64.Build.0 = Release|x64
+		{4D71CD80-D32D-46FF-A5E2-523E2BDA4919}.Debug|x64.ActiveCfg = Debug|x64
+		{4D71CD80-D32D-46FF-A5E2-523E2BDA4919}.Debug|x64.Build.0 = Debug|x64
+		{4D71CD80-D32D-46FF-A5E2-523E2BDA4919}.Release|x64.ActiveCfg = Release|x64
+		{4D71CD80-D32D-46FF-A5E2-523E2BDA4919}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2EEE0384-CF17-46B6-8938-F4551E963591}
+	EndGlobalSection
+EndGlobal
