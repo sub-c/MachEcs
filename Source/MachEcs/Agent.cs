@@ -99,7 +99,12 @@ namespace SubC.MachEcs
         public T RegisterSystem<T>()
             where T : EcsSystem, new()
         {
-            return _systemWorker.RegisterSystem<T>(this);
+            var system = _systemWorker.RegisterSystem<T>(this);
+            if (system is IInitializableSystem initSystem)
+            {
+                initSystem.Initialize();
+            }
+            return system;
         }
 
         public void RemoveComponent<T>()
