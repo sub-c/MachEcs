@@ -13,6 +13,7 @@
     <Authors>Sub-C</Authors>
     <Company>Sub-C</Company>
     <Description>An entity-component-system framework library for C#.</Description>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
 </Project>
