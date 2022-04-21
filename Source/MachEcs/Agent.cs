@@ -28,10 +28,15 @@ namespace SubC.MachEcs
     {
       switch (signatureType)
       {
+        case EcsSignatureType.BitArray1K:
+          return new Agent<BitArray1KEcsSignature>(maximumEntities);
+        case EcsSignatureType.DoubleLong:
+          return new Agent<DoubleLongEcsSignature>(maximumEntities);
         case EcsSignatureType.SingleLong:
           return new Agent<SingleLongEcsSignature>(maximumEntities);
+        default:
+          throw new NotImplementedException($"Cannot create agent: {signatureType} not supported.");
       }
-      throw new NotImplementedException($"Cannot create agent: {signatureType} not supported.");
     }
 
     /// <summary>

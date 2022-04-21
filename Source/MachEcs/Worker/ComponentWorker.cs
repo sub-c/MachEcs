@@ -54,6 +54,10 @@ namespace SubC.MachEcs.Worker
       var cache = new ComponentCache<T>();
       _caches.Add(typeof(T), cache);
       var signature = new S();
+      if (_currentSignatureBit >= signature.MaximumSupportedBits)
+      {
+        throw new Exception($"Exceeded the maximum amount of unique signatures ({typeof(S).Name} supports up to {signature.MaximumSupportedBits}). Use a larger signature type when creating the agent.");
+      }
       signature.EnableBit(_currentSignatureBit++);
       _cacheSignatures.Add(typeof(T), signature);
     }
