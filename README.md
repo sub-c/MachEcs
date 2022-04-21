@@ -26,6 +26,8 @@ and attach relevant components to them.
 
 For more details of what all this means, keep reading!
 
+You may find it useful to view basic usage in the [RoundTripTest](https://github.com/sub-c/MachEcs/blob/master/Source/MachEcs.Tests/AgentTests.cs).
+
 ### Create an agent
 An ECS world is interacted with via an ```Agent```. The agent allows you to create entities, get components, etc.
 To create one, use something like the following:
