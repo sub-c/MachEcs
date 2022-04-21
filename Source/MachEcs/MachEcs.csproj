@@ -1,19 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Platforms>x64</Platforms>
+    <Platforms>x64;x86</Platforms>
     <AssemblyName>SubC.MachEcs</AssemblyName>
     <RootNamespace>SubC.MachEcs</RootNamespace>
     <BaseOutputPath>..\..\Artifacts\</BaseOutputPath>
     <PackageId>SubC.MachEcs</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.2.0</Version>
     <Authors>Sub-C</Authors>
     <Company>Sub-C</Company>
     <Description>An entity-component-system framework library for C#.</Description>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
   </PropertyGroup>
 
 </Project>

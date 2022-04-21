@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Platforms>x64;x86</Platforms>
+    <BaseOutputPath></BaseOutputPath>
+    <RootNamespace>SubC.MachEcs.Benchmarks</RootNamespace>
+    <StartupObject>SubC.MachEcs.Benchmarks.Program</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MachEcs\MachEcs.csproj" />
+  </ItemGroup>
+
+</Project>
