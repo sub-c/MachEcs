@@ -15,6 +15,18 @@
     <Description>An entity-component-system framework library for C#.</Description>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/sub-c/MachEcs</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/sub-c/MachEcs</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>ecs;entity-component-system;framework;entity;component;system</PackageTags>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
