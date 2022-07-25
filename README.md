@@ -68,6 +68,17 @@ The point of defining components to the system is so that the agent knows what e
 of the components in the system's signature/generic parameter list. This is core to how a system works: the system
 is invoked via method or event, and it applys logic to all the entities that hold the specified components.
 
+### Register systems
+To create and hook a system into the agent, you need to register it:
+```C#
+var iWantAReferenceToSystem = agent.RegisterSystem<MovementSystem>();
+_ = agent.RegisterSystem<SomeOtherSystem>();
+```
+
+You are free to discard the system returned by ```RegisterSystem<T>()```, as the agent will hold a reference
+for itself. If you're wondering how a system is interacted with if the returned reference is thrown away, you
+use constructor of the system to register event handlers which will be explained later.
+
 ### Create entities
 Things in your application will be defined by their components; these components are grouped together by an entity.
 Creating an entity and grouping components is done by:
