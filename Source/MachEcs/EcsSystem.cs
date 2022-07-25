@@ -7,7 +7,7 @@ namespace SubC.MachEcs
   /// </summary>
   public abstract class EcsSystem
   {
-    internal readonly List<IEcsEntity> InternalEntities = new();
+    internal readonly List<IEcsEntity> InternalEntities = new List<IEcsEntity>();
 
     /// <summary>
     /// Gets the agent that this system exists in.

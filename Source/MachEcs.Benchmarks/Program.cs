@@ -7,7 +7,8 @@ namespace SubC.MachEcs.Benchmarks
     public static void Main(string[] args)
     {
       //BenchmarkRunner.Run<BitArrayBenchmarks>();
-      BenchmarkRunner.Run<EventWorkerBenchmarks>();
+      //BenchmarkRunner.Run<EventWorkerBenchmarks>();
+      BenchmarkRunner.Run<TypeBenchmarks>();
     }
   }
 }

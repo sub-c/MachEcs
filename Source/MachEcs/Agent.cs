@@ -166,11 +166,11 @@ namespace SubC.MachEcs
   internal sealed class Agent<S> : Agent
     where S : EcsSignature<S>, new()
   {
-    private readonly ComponentWorker<S> _componentWorker = new();
+    private readonly ComponentWorker<S> _componentWorker = new ComponentWorker<S>();
     private readonly EntityWorker<S> _entityWorker;
-    private readonly EventWorker _eventWorker = new();
+    private readonly EventWorker _eventWorker = new EventWorker();
     private readonly IEcsEntity _singletonEntity;
-    private readonly SystemWorker<S> _systemWorker = new();
+    private readonly SystemWorker<S> _systemWorker = new SystemWorker<S>();
 
     public Agent(int maximumEntities)
     {

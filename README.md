@@ -1,5 +1,5 @@
 # MachECS v3.x
-MachECS is an entity-component-system (ECS) library for .NET 6+ applications:
+MachECS is an entity-component-system (ECS) library for .NET Standard 2.0 and .NET 6 applications:
 * ECS is an [architecture pattern](https://www.guru99.com/entity-component-system.html), where state and logic are
 separated from each other.
 * Components hold state.
@@ -7,7 +7,7 @@ separated from each other.
 * Systems apply logic to state via entities.
 
 # Installation
-Add the NuGet package to your .NET 6 application.
+Add the NuGet package to your .NET Standard 2.0 or .NET 6 application.
 
 # Usage
 In short summary:
@@ -25,8 +25,6 @@ You could also create entities that represent things in your application, such a
 and attach relevant components to them.
 
 For more details of what all this means, keep reading!
-
-You may find it useful to view basic usage in the [RoundTripTest](https://github.com/sub-c/MachEcs/blob/master/Source/MachEcs.Tests/AgentTests.cs).
 
 ### Create an agent
 An ECS world is interacted with via an ```Agent```. The agent allows you to create entities, get components, etc.
@@ -126,6 +124,4 @@ Since the system class has access to the inherited ```EcsSystem.Agent``` and ```
 kick off logic in the system that can iterate over entities for their components.
 
 # History
-MachECS v3.x is now a .NET 6 library. if you need .NET Standard 2.0 compatibility, please use MachECS v2.x.
-
-MachECS v2.x is not source compatible with v3.x. The basic ECS framework is similiar.
+As of version 3.0.26, MachECS is now a .NET Standard 2.0 and .NET 6 library.

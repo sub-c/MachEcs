@@ -7,7 +7,7 @@ namespace SubC.MachEcs.Models
   {
     public override int MaximumSupportedBits => 1000;
 
-    private readonly BitArray _bits = new(1000);
+    private readonly BitArray _bits = new BitArray(1000);
 
     public override void DisableBit(int position)
     {

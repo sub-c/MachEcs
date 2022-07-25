@@ -59,10 +59,10 @@ namespace SubC.MachEcs.Worker
     private static T CreateSystemInstance<T>(Agent<S> agent)
       where T : EcsSystem
     {
-      var systemConstructor = typeof(T).GetConstructor(BindingFlags.Instance | BindingFlags.Public, new Type[] { typeof(Agent) })
-        ?? throw new NullReferenceException($"Cannot register system: constructor does not take a single agent parameter.");
+      var systemConstructor = typeof(T).GetConstructor(new Type[] { typeof(Agent) })
+        ?? throw new NullReferenceException($"Cannot register system ({typeof(T).Name}): constructor does not take a single agent parameter.");
       var system = systemConstructor.Invoke(new object[] { agent })
-        ?? throw new NullReferenceException($"Cannot register system: constructor did not successfully invoke.");
+        ?? throw new NullReferenceException($"Cannot register system ({typeof(T).Name}): constructor did not successfully invoke.");
       return (T)system;
     }
 
